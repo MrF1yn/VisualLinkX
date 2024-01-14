@@ -10,12 +10,12 @@
 	<meta name="description" content="VisualLinkX the high end video conferencing app" />
 </svelte:head>
 
-<div class="background flex">
+<div class="background flex bg-palette1-0">
 	<Header></Header>
 	<div class="container flex">
-		<div class="bg-amber-200 w-full h-full">
+		<div class=" w-full h-full">
 		</div>
-		<div class="bg-amber-200 w-full h-full">
+		<div class=" w-full h-full">
 		</div>
 	</div>
 </div>
@@ -37,7 +37,8 @@
 		gap: 2%;
 	}
 	.background{
-		background-color: #092327;
+		/*background-color: #092327;*/
+		/*background-color: #092327;*/
 		width: 100%;
 		height: 100vh;
 		align-items: center;
