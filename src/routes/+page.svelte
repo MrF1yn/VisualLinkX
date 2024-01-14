@@ -1,59 +1,46 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import { page } from '$app/stores';
+	import Header from "./Header.svelte";
+	let spanClass = 'flex-1 ms-3 whitespace-nowrap';
+	$: activeUrl = $page.url.pathname;
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>VisualLinkX</title>
+	<meta name="description" content="VisualLinkX the high end video conferencing app" />
 </svelte:head>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
+<div class="background flex">
+	<Header></Header>
+	<div class="container flex">
+		<div class="bg-amber-200 w-full h-full">
+		</div>
+		<div class="bg-amber-200 w-full h-full">
+		</div>
+	</div>
+</div>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
+	:global(html,body) {
+		margin: 0;
+		padding: 0;
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+		'Open Sans', 'Helvetica Neue', sans-serif;
+		/*min-height: 100vh;*/
+		overflow: hidden;
 	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
+	.container{
+		min-width: 98%;
 		height: 100%;
-		top: 0;
-		display: block;
+		flex-direction: row;
+		justify-content: left;
+		gap: 2%;
+	}
+	.background{
+		background-color: #092327;
+		width: 100%;
+		height: 100vh;
+		align-items: center;
+		flex-direction: column;
 	}
 </style>
