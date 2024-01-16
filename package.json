@@ -35,5 +35,15 @@
 		"typescript": "^5.0.0",
 		"vite": "^5.0.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"bits-ui": "^0.14.0",
+		"clsx": "^2.1.0",
+		"embla-carousel": "^8.0.0-rc19",
+		"embla-carousel-autoplay": "^8.0.0-rc19",
+		"embla-carousel-svelte": "^8.0.0-rc19",
+		"radix-icons-svelte": "^1.2.1",
+		"tailwind-merge": "^2.2.0",
+		"tailwind-variants": "^0.1.20"
+	}
 }
