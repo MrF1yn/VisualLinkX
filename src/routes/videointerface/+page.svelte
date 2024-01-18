@@ -16,10 +16,18 @@
 
 <div class="background flex">
     <Header></Header>
-    <div class="container flex items-center flex-col-reverse md:flex-row">
-        <LeftSection></LeftSection>
-        <Separator orientation="vertical" class="h-3/5 max-md:hidden"/>
-        <RightSection></RightSection>
+    <div class="container flex items-center justify-start flex-col-reverse md:flex-row">
+        <Card.Root class="border-white w-full h-[90%] border-[1px]">
+
+        </Card.Root>
+        <Card.Root class="border-white aspect-video h-[90%] border-[1px]">
+
+        </Card.Root>
+        <Card.Root class="border-white w-full h-[90%] border-[1px]">
+
+        </Card.Root>
+
+
     </div>
 </div>
 
