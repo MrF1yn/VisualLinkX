@@ -11,8 +11,8 @@ import * as Card from "$lib/components/ui/card";
 <div class="p-1 w-full md:w-[40%] h-1/2 md:h-[90%]">
     <Card.Root class=" h-full border-white border-[1px] flex flex-col justify-items justify-evenly">
         <Card.Header>
-            <Card.Title class="text-3xl break-words">Your HD video call awaits you!.</Card.Title>
-            <Card.Description class="text-1xl">Enjoy seamless high definition video calls with VisualLinkX.</Card.Description>
+            <Card.Title class="text-2xl md:text-3xl break-words">Your HD video call awaits you!.</Card.Title>
+            <Card.Description class="text-1xl max-md:hidden">Enjoy seamless high definition video calls with VisualLinkX.</Card.Description>
         </Card.Header>
         <Card.Content>
             <form>
@@ -20,13 +20,15 @@ import * as Card from "$lib/components/ui/card";
                     <div class="flex flex-col space-y-1.5">
                         <Label for="name">Name</Label>
                         <Input id="name" placeholder="enter your name" />
+                        <Button>Create a Meeting</Button>
                     </div>
-                    <Button>Create a Meeting</Button>
+
                     <div class="flex flex-col space-y-1.5">
                         <Label for="meeting-link">Join a meeting</Label>
                         <Input id="meeting-link" placeholder="enter your meeting link"/>
+                        <Button>Join</Button>
                     </div>
-                    <Button>Join</Button>
+
                     <Separator></Separator>
                 </div>
             </form>
