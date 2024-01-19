@@ -5,6 +5,8 @@
 import * as Card from "$lib/components/ui/card";
     import {Separator} from "$lib/components/ui/separator";
 
+
+
 </script>
 
 <!--<div class="right-sec w-[40%] h-[80vh] min-h-0  flex items-center justify-center">-->
@@ -24,9 +26,9 @@ import * as Card from "$lib/components/ui/card";
                     </div>
 
                     <div class="flex flex-col space-y-1.5">
-                        <Label for="meeting-link">Join a meeting</Label>
+                        <Label for="meeting-link">Join</Label>
                         <Input id="meeting-link" placeholder="enter your meeting link"/>
-                        <Button>Join</Button>
+                        <Button>Join a Meeting</Button>
                     </div>
 
                     <Separator></Separator>
