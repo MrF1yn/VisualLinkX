@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Header from "$lib/components/Header.svelte";
     import * as Card from "$lib/components/ui/card";
     import * as Carousel from "$lib/components/ui/carousel";
@@ -8,7 +8,11 @@
     import LeftSection from "$lib/components/LeftSection.svelte";
     import RightSection from "$lib/components/RightSection.svelte";
     import {Button} from "radix-icons-svelte";
-
+    let card = new Card.Root({
+        target: document.querySelector("#participants") as HTMLElement,
+        props: {
+        }
+    })
 
 
 </script>
@@ -21,8 +25,9 @@
 <div class="background flex">
     <Header></Header>
     <div class="container flex items-center justify-start flex-col-reverse md:flex-row">
-        <Card.Root class="border-white w-[20%] h-[95%] border-[1px] flex flex-col">
-            <Button class="w-full h-full"></Button>
+        <Card.Root id="participants" class="border-white w-[20%] h-[95%] border-[1px] p-1 flex flex-col gap-[2%] ">
+                <Card.Root class="w-full p-2 ">TEST</Card.Root>
+                <Card.Root class="w-full p-2 ">TEST</Card.Root>
         </Card.Root>
         <Card.Root class="border-white w-[60%] h-[95%] border-[1px]">
 
