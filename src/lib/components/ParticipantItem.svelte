@@ -14,6 +14,6 @@
 
 
 <Card.Root class="w-full p-2 {color}">
-    TEST {participantName}
+    {participantName}
 </Card.Root>
 

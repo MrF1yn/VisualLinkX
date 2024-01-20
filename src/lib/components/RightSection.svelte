@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { goto } from '$app/navigation';
     import { Button } from "$lib/components/ui/button";
     import { Input } from "$lib/components/ui/input";
     import { Label } from "$lib/components/ui/label";
@@ -6,12 +7,14 @@ import * as Card from "$lib/components/ui/card";
     import {Separator} from "$lib/components/ui/separator";
     async function submitForm(e: Event){
         const data = new FormData(e.target as HTMLFormElement);
-        const response = await fetch("http://localhost:3000/create", {
-            method: "POST",
-            body: data
-        })
-        const responseData = await response.json();
-        console.log(responseData);
+        // const response = await fetch("http://localhost:3000/create", {
+        //     method: "POST",
+        //     body: data
+        // })
+        // const responseData = response.body;
+        // console.log(responseData);
+        goto(`/rooms/test?name=${data.get('name')}`);
+
 
 
     }

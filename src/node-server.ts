@@ -1,33 +1,29 @@
 import { handler } from '../build/handler.js';
 import { AccessToken } from 'livekit-server-sdk';
 import express from 'express';
-import bodyParser from "body-parser";
 import multer from 'multer';
 
 let upload = multer();
 let app = express();
 
+app.use(express.json());
 
+// for parsing application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
 
-// for parsing application/json
-app.use(bodyParser.json());
-
-// for parsing application/xwww-
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// app.use(upload.array());
+// for parsing multipart/form-data
+app.use(upload.array(''));
 app.use(express.static('public'));
-
 
 
 function createToken(roomName: string, participantName: string){
 
-    const at = new AccessToken('devKey', 'devSecret', {
+    const at = new AccessToken('devkey', 'secret', {
         identity: participantName,
     });
     at.addGrant({ roomJoin: true, room: roomName });
 
-    return at.toJwt();
+    return {"token": at.toJwt()};
 }
 
 app.post("/create", (req, res)=>{
