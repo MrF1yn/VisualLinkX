@@ -1,18 +1,24 @@
 <script lang="ts">
     import Header from "$lib/components/Header.svelte";
     import * as Card from "$lib/components/ui/card";
-    import * as Carousel from "$lib/components/ui/carousel";
-    import Autoplay from "embla-carousel-autoplay";
+    import {onMount} from "svelte";
+    import ParticipantItem from "$lib/components/ParticipantItem.svelte";
+    onMount(()=>{
+        let i = 0;
+        let card = new ParticipantItem({
+            target: document.querySelector("#participants") as HTMLElement,
+            props: {
+                participantName: "HELLO" + i++
+            }
+        });
 
-    import { Separator } from "$lib/components/ui/separator";
-    import LeftSection from "$lib/components/LeftSection.svelte";
-    import RightSection from "$lib/components/RightSection.svelte";
-    import {Button} from "radix-icons-svelte";
-    let card = new Card.Root({
-        target: document.querySelector("#participants") as HTMLElement,
-        props: {
-        }
+
+
+
+
     })
+
+
 
 
 </script>
@@ -24,19 +30,17 @@
 
 <div class="background flex">
     <Header></Header>
-    <div class="container flex items-center justify-start flex-col-reverse md:flex-row">
-        <Card.Root id="participants" class="border-white w-[20%] h-[95%] border-[1px] p-1 flex flex-col gap-[2%] ">
-                <Card.Root class="w-full p-2 ">TEST</Card.Root>
-                <Card.Root class="w-full p-2 ">TEST</Card.Root>
-        </Card.Root>
-        <Card.Root class="border-white w-[60%] h-[95%] border-[1px]">
+    <div class="container flex items-center justify-start flex-col-reverse md:flex-row flex-wrap overflow-auto">
+        <Card.Root id="participants" class="border-white overflow-auto h-[90%] border-[1px] p-3 flex flex-col gap-[2%] items-center flex-1 ">
 
         </Card.Root>
-        <Card.Root class="border-white w-[20%] h-[95%] border-[1px]">
+        <div id="participant-videos" class="aspect-video border bg-card text-card-foreground shadow h-[90%] flex-1 p-4  " >
+            <div class="rounded-xl bg-card border aspect-video w-full"></div>
+            <div class="rounded-xl bg-card border aspect-video w-full"></div>
 
-        </Card.Root>
 
 
+        </div>
     </div>
 </div>
 
@@ -48,6 +52,18 @@
         'Open Sans', 'Helvetica Neue', sans-serif;
         /*min-height: 100vh;*/
         overflow: hidden;
+    }
+    :global(#participant-videos) {
+        /*visibility: hidden;*/
+        display: grid;
+        grid-auto-flow: row;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-rows: repeat(auto-fit, 1fr);
+        column-gap: 10px;
+        row-gap: 10px;
+        justify-content: center;
+        align-content: center;
+
     }
     .container{
         min-width: 100%;

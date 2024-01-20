@@ -1,9 +1,20 @@
-<script>
+<script lang="ts">
     import { Button } from "$lib/components/ui/button";
     import { Input } from "$lib/components/ui/input";
     import { Label } from "$lib/components/ui/label";
 import * as Card from "$lib/components/ui/card";
     import {Separator} from "$lib/components/ui/separator";
+    async function submitForm(e: Event){
+        const data = new FormData(e.target as HTMLFormElement);
+        const response = await fetch("http://localhost:3000/create", {
+            method: "POST",
+            body: data
+        })
+        const responseData = await response.json();
+        console.log(responseData);
+
+
+    }
 
 
 
@@ -17,18 +28,18 @@ import * as Card from "$lib/components/ui/card";
             <Card.Description class="text-1xl max-md:hidden">Enjoy seamless high definition video calls with VisualLinkX.</Card.Description>
         </Card.Header>
         <Card.Content>
-            <form>
+            <form on:submit|preventDefault={submitForm}>
                 <div class="grid w-full items-center gap-[5%]">
                     <div class="flex flex-col space-y-1.5">
                         <Label for="name">Name</Label>
-                        <Input id="name" placeholder="enter your name" />
-                        <Button>Create a Meeting</Button>
+                        <Input id="name" name="name" placeholder="enter your name" />
+                        <Button type="submit">Create a Meeting</Button>
                     </div>
 
                     <div class="flex flex-col space-y-1.5">
                         <Label for="meeting-link">Join</Label>
-                        <Input id="meeting-link" placeholder="enter your meeting link"/>
-                        <Button>Join a Meeting</Button>
+                        <Input id="meeting-link" name="meeting-link" placeholder="enter your meeting link"/>
+                        <Button type="submit">Join a Meeting</Button>
                     </div>
 
                     <Separator></Separator>
