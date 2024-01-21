@@ -9,7 +9,10 @@
 
      onMount(()=>{
          track.attach(document.getElementById(ide) as HTMLVideoElement);
-     })
+     });
+
+
+
 
 
 
