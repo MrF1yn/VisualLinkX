@@ -1,20 +1,27 @@
 <script lang="ts">
     import Header from "$lib/components/Header.svelte";
-    import * as Card from "$lib/components/ui/card";
+    import { toast } from "svelte-sonner";
     import {onMount} from "svelte";
     import ParticipantItem from "$lib/components/ParticipantItem.svelte";
-    import { page } from '$app/stores'
-    import type { PageData } from './$types';
-    import {LocalParticipant, LocalTrackPublication, Track, VideoPresets} from "livekit-client";
-    import {Video} from "radix-icons-svelte";
+    import {page} from '$app/stores'
+    import type {PageData} from './$types';
+    import * as Card from "$lib/components/ui/card";
     import {
+        LocalParticipant,
+        LocalTrackPublication,
         Participant,
         RemoteParticipant,
         RemoteTrack,
         RemoteTrackPublication,
         Room,
         RoomEvent,
-    } from 'livekit-client';
+        Track,
+        VideoPresets
+    } from "livekit-client";
+
+    import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
+
+
     export let data: PageData;
     onMount(async ()=>{
         const name = $page.url.searchParams.get('name');
@@ -56,7 +63,8 @@
             .on(RoomEvent.TrackUnsubscribed, handleTrackUnsubscribed)
             .on(RoomEvent.ActiveSpeakersChanged, handleActiveSpeakerChange)
             .on(RoomEvent.Disconnected, handleDisconnect)
-            .on(RoomEvent.LocalTrackUnpublished, handleLocalTrackUnpublished);
+            .on(RoomEvent.LocalTrackUnpublished, handleLocalTrackUnpublished)
+            // .on(RoomEvent.ParticipantConnected, handleParticipantConnected)
 
 // connect to room
         await room.connect('ws://127.0.0.1:7880', token);
@@ -65,17 +73,44 @@
 // publish local camera and mic tracks
         await room.localParticipant.enableCameraAndMicrophone();
 
+        function handleParticipantConnected(participant: RemoteParticipant){
+            let card = new ParticipantItem({
+                target: document.querySelector("#participants") as HTMLElement,
+                props: {
+                    participantName: participant.identity
+                }
+            });
+        }
+
         function handleTrackSubscribed(
             track: RemoteTrack,
             publication: RemoteTrackPublication,
             participant: RemoteParticipant,
         ) {
-            console.log("SUB");
+
             if (track.kind === Track.Kind.Video || track.kind === Track.Kind.Audio) {
-                // attach it to a new HTMLVideoElement or HTMLAudioElement
-                const vid = (document.querySelector("#one") as HTMLVideoElement );
-                track.attach( vid );
-                vid.requestFullscreen();
+
+                if(track.kind !== Track.Kind.Video)return;
+                let vidElm: ParticipantVideo = new ParticipantVideo({
+                    target: document.querySelector("#participant-videos") as HTMLElement,
+                    props:{
+                        ide: participant.identity.replaceAll(" ", "-"),
+                        track: track
+                    }
+                });
+                let card = new ParticipantItem({
+                    target: document.querySelector("#participants") as HTMLElement,
+                    props: {
+                        participantName: participant.identity
+                    }
+                });
+                toast(`${participant.identity} has joined the call!`, {
+                    description: "Sunday, December 03, 2023 at 9:00 AM",
+                })
+                // vidElm.setID(participant.identity as string);
+                // console.log(vidHtm);
+                // track.attach(vidHtm);
+                // vid.requestFullscreen();
 
             }
         }
@@ -85,7 +120,6 @@
             publication: RemoteTrackPublication,
             participant: RemoteParticipant,
         ) {
-            // remove tracks from all attached elements
             track.detach();
         }
 
@@ -94,13 +128,11 @@
             participant: LocalParticipant,
         )
         {
-            // when local tracks are ended, update UI to remove them from rendering
             if(!publication.track)return;
             publication.track.detach();
         }
 
         function handleActiveSpeakerChange(speakers: Participant[]) {
-            // show UI indicators when participant is speaking
         }
 
         function handleDisconnect() {
@@ -108,10 +140,8 @@
         }
 
         const p = room.localParticipant;
-
-
-
-
+        const localVid = (document.querySelector("#local") as HTMLVideoElement );
+        p.getTrack(Track.Source.Camera)?.track?.attach(localVid);
 
 
         let card = new ParticipantItem({
@@ -146,7 +176,7 @@
 
         </Card.Root>
         <div id="participant-videos" class="aspect-video border bg-card text-card-foreground shadow h-[90%] flex-1 p-4  " >
-            <video id="one" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>
+            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>
 <!--            <video class="rounded-xl bg-card border aspect-video w-full"></video>-->
 
 

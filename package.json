@@ -52,9 +52,11 @@
 		"express": "^4.18.2",
 		"livekit-client": "^1.15.10",
 		"livekit-server-sdk": "^1.2.7",
+		"mode-watcher": "^0.1.2",
 		"multer": "^1.4.5-lts.1",
 		"radix-icons-svelte": "^1.2.1",
 		"svelte-awesome": "^3.3.1",
+		"svelte-sonner": "^0.3.11",
 		"tailwind-merge": "^2.2.0",
 		"tailwind-variants": "^0.1.20"
 	}
