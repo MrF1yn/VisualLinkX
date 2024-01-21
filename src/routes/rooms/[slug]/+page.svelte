@@ -9,7 +9,7 @@
     import {
         LocalParticipant,
         LocalTrackPublication,
-        Participant,
+        Participant, ParticipantEvent,
         RemoteParticipant,
         RemoteTrack,
         RemoteTrackPublication,
@@ -20,7 +20,7 @@
     } from "livekit-client";
 
     import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
-
+    let participantItems = new Map();
 
     export let data: PageData;
     onMount(async ()=>{
@@ -82,6 +82,12 @@
             });
         }
 
+        function handleSpeakingChanged(speaking: boolean){
+
+
+
+        }
+
         function handleTrackSubscribed(
             track: RemoteTrack,
             publication: RemoteTrackPublication,
@@ -104,6 +110,15 @@
                         participantName: participant.identity
                     }
                 });
+                participantItems.set(participant.identity, card);
+                participant.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
+                    const participantItem = (participantItems.get(participant.identity) as ParticipantItem);
+                    if(speaking)
+                        participantItem.activate();
+                    else
+                        participantItem.deActivate();
+                });
+
                 toast(`${participant.identity} has joined the call!`, {
                     description: "Sunday, December 03, 2023 at 9:00 AM",
                 })
@@ -121,6 +136,9 @@
             participant: RemoteParticipant,
         ) {
             track.detach();
+            if(track.kind === Track.Kind.Video){
+                (document.getElementById(participant.identity) as HTMLElement).$destroy();
+            }
         }
 
         function handleLocalTrackUnpublished(
@@ -149,6 +167,15 @@
             props: {
                 participantName: name
             }
+        });
+        participantItems.set(name, card);
+        p.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
+            const participantItem = (participantItems.get(name) as ParticipantItem);
+            if(speaking)
+                participantItem.activate();
+            else
+                participantItem.deActivate();
+
         });
 
 
