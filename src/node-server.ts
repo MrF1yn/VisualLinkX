@@ -19,7 +19,8 @@ app.use(express.static('public'));
 function createToken(roomName: string, participantName: string){
 
     const at = new AccessToken('devkey', 'secret', {
-        identity: participantName,
+        identity: participantName.replaceAll(" ", "-"),
+        name:participantName
     });
     at.addGrant({ roomJoin: true, room: roomName });
 

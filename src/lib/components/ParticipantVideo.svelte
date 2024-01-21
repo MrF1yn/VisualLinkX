@@ -5,8 +5,6 @@
      export let ide: string = "";
      export let track: RemoteTrack;
 
-     export let ref;
-
      onMount(()=>{
          track.attach(document.getElementById(ide) as HTMLVideoElement);
      });
@@ -22,7 +20,7 @@
 
 </script>
 
-<video bind:this={ref} id="{ide}" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>
+<video id="{ide}" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>
 
 <style>
 

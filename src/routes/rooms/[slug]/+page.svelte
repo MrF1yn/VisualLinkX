@@ -6,20 +6,10 @@
     import {page} from '$app/stores'
     import type {PageData} from './$types';
     import * as Card from "$lib/components/ui/card";
-    import {
-        LocalParticipant,
-        LocalTrackPublication,
-        Participant, ParticipantEvent,
-        RemoteParticipant,
-        RemoteTrack,
-        RemoteTrackPublication,
-        Room,
-        RoomEvent,
-        Track,
-        VideoPresets
-    } from "livekit-client";
+    import {ParticipantEvent, Track} from "livekit-client";
 
     import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
+    import {ClientRoomManager} from "../ClientRoomManager";
     let participantItems = new Map();
 
     export let data: PageData;
@@ -27,140 +17,13 @@
         const name = $page.url.searchParams.get('name');
         const meetingID = (data as {meetingID: string}).meetingID;
         if(!name)return;
-        const body = {name: name, meetingID: meetingID};
-
-        const response = await fetch("http://localhost:3000/create", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(body)
-        });
-        const token = (await response.json()).token;
+        const clientRoomManager = new ClientRoomManager(meetingID, name);
+        await clientRoomManager.init();
+        const p = clientRoomManager.room.localParticipant;
 
 
-
-// creates a new room with options
-        const room = new Room({
-            // automatically manage subscribed video quality
-            adaptiveStream: true,
-
-            // optimize publishing bandwidth and CPU for published tracks
-            dynacast: true,
-
-            // default capture settings
-            videoCaptureDefaults: {
-                resolution: VideoPresets.h720.resolution,
-            },
-        });
-
-// pre-warm connection, this can be called as early as your page is loaded
-        room.prepareConnection("ws://127.0.0.1:7880", token);
-
-// set up event listeners
-        room
-            .on(RoomEvent.TrackSubscribed, handleTrackSubscribed)
-            .on(RoomEvent.TrackUnsubscribed, handleTrackUnsubscribed)
-            .on(RoomEvent.ActiveSpeakersChanged, handleActiveSpeakerChange)
-            .on(RoomEvent.Disconnected, handleDisconnect)
-            .on(RoomEvent.LocalTrackUnpublished, handleLocalTrackUnpublished)
-            // .on(RoomEvent.ParticipantConnected, handleParticipantConnected)
-
-// connect to room
-        await room.connect('ws://127.0.0.1:7880', token);
-        console.log('connected to room', room.name);
-
-// publish local camera and mic tracks
-        await room.localParticipant.enableCameraAndMicrophone();
-
-        function handleParticipantConnected(participant: RemoteParticipant){
-            let card = new ParticipantItem({
-                target: document.querySelector("#participants") as HTMLElement,
-                props: {
-                    participantName: participant.identity
-                }
-            });
-        }
-
-        function handleSpeakingChanged(speaking: boolean){
-
-
-
-        }
-
-        function handleTrackSubscribed(
-            track: RemoteTrack,
-            publication: RemoteTrackPublication,
-            participant: RemoteParticipant,
-        ) {
-
-            if (track.kind === Track.Kind.Video || track.kind === Track.Kind.Audio) {
-
-                if(track.kind !== Track.Kind.Video)return;
-                let vidElm: ParticipantVideo = new ParticipantVideo({
-                    target: document.querySelector("#participant-videos") as HTMLElement,
-                    props:{
-                        ide: participant.identity.replaceAll(" ", "-"),
-                        track: track
-                    }
-                });
-                let card = new ParticipantItem({
-                    target: document.querySelector("#participants") as HTMLElement,
-                    props: {
-                        participantName: participant.identity
-                    }
-                });
-                participantItems.set(participant.identity, card);
-                participant.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
-                    const participantItem = (participantItems.get(participant.identity) as ParticipantItem);
-                    if(speaking)
-                        participantItem.activate();
-                    else
-                        participantItem.deActivate();
-                });
-
-                toast(`${participant.identity} has joined the call!`, {
-                    description: "Sunday, December 03, 2023 at 9:00 AM",
-                })
-                // vidElm.setID(participant.identity as string);
-                // console.log(vidHtm);
-                // track.attach(vidHtm);
-                // vid.requestFullscreen();
-
-            }
-        }
-
-        function handleTrackUnsubscribed(
-            track: RemoteTrack,
-            publication: RemoteTrackPublication,
-            participant: RemoteParticipant,
-        ) {
-            track.detach();
-            if(track.kind === Track.Kind.Video){
-                (document.getElementById(participant.identity) as HTMLElement).$destroy();
-            }
-        }
-
-        function handleLocalTrackUnpublished(
-            publication: LocalTrackPublication,
-            participant: LocalParticipant,
-        )
-        {
-            if(!publication.track)return;
-            publication.track.detach();
-        }
-
-        function handleActiveSpeakerChange(speakers: Participant[]) {
-        }
-
-        function handleDisconnect() {
-            console.log('disconnected from room');
-        }
-
-        const p = room.localParticipant;
         const localVid = (document.querySelector("#local") as HTMLVideoElement );
         p.getTrack(Track.Source.Camera)?.track?.attach(localVid);
-
 
         let card = new ParticipantItem({
             target: document.querySelector("#participants") as HTMLElement,
@@ -168,19 +31,15 @@
                 participantName: name
             }
         });
-        participantItems.set(name, card);
+        participantItems.set(p.sid, card);
         p.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
-            const participantItem = (participantItems.get(name) as ParticipantItem);
+            const participantItem = (participantItems.get(p.sid) as ParticipantItem);
             if(speaking)
                 participantItem.activate();
             else
                 participantItem.deActivate();
 
         });
-
-
-
-
 
 
 

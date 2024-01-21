@@ -3,12 +3,14 @@ import ParticipantItem from "$lib/components/ParticipantItem.svelte";
 import {Room, RoomEvent, VideoPresets} from "livekit-client";
 import {
     handleActiveSpeakerChange,
-    handleDisconnect, handleLocalTrackUnpublished, handleParticipantConnected,
+    handleDisconnect, handleLocalTrackUnpublished, handleParticipantConnected, handleParticipantDisconnected,
     handleTrackSubscribed,
     handleTrackUnsubscribed
 } from "./ClientRoomListeners";
 
-class ClientRoomManager{
+export let roomManager: ClientRoomManager;
+
+export class ClientRoomManager{
 
     participantVideoItems: Map<string, ParticipantVideo>;
     participantItems: Map<string, ParticipantItem>;
@@ -22,7 +24,7 @@ class ClientRoomManager{
     constructor(meetingID: string, name: string) {
         this.token = "";
         this.sfuIp = "ws://127.0.0.1:7880";
-        this.backendIp = "";
+        this.backendIp = "http://localhost:3000";
         this.participantItems = new Map();
         this.participantVideoItems = new Map();
         this.meetingId = meetingID;
@@ -39,6 +41,7 @@ class ClientRoomManager{
                 resolution: VideoPresets.h720.resolution,
             },
         });
+        roomManager = this;
     }
 
     async fetchToken(){
@@ -62,7 +65,11 @@ class ClientRoomManager{
             .on(RoomEvent.Disconnected, handleDisconnect)
             .on(RoomEvent.LocalTrackUnpublished, handleLocalTrackUnpublished)
             .on(RoomEvent.ParticipantConnected, handleParticipantConnected)
+            .on(RoomEvent.ParticipantDisconnected, handleParticipantDisconnected)
+        await this.room.connect(this.sfuIp, this.token);
 
+        console.log('connected to room', this.room.name);
+        await this.room.localParticipant.enableCameraAndMicrophone();
 
     }
 
