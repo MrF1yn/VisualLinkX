@@ -1,5 +1,6 @@
 <script lang="ts">
     import Header from "$lib/components/Header.svelte";
+    import userName from "$lib/Store";
     import { toast } from "svelte-sonner";
     import {onMount} from "svelte";
     import ParticipantItem from "$lib/components/ParticipantItem.svelte";
@@ -10,12 +11,19 @@
 
     import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
     import {ClientRoomManager} from "../ClientRoomManager";
-    let participantItems = new Map();
 
     export let data: PageData;
     onMount(async ()=>{
-        const name = $page.url.searchParams.get('name');
+        let name = "";
+        userName.subscribe((n)=>{
+            name = n;
+        });
+        // const name = $page.url.searchParams.get('name');
         const meetingID = (data as {meetingID: string}).meetingID;
+        console.log(name);
+        //TODO validateMeetingID;
+
+
         if(!name)return;
         const clientRoomManager = new ClientRoomManager(meetingID, name);
         await clientRoomManager.init();
@@ -31,9 +39,9 @@
                 participantName: name
             }
         });
-        participantItems.set(p.sid, card);
+        clientRoomManager.participantItems.set(p.sid, card);
         p.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
-            const participantItem = (participantItems.get(p.sid) as ParticipantItem);
+            const participantItem = (clientRoomManager.participantItems.get(p.sid) as ParticipantItem);
             if(speaking)
                 participantItem.activate();
             else

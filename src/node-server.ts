@@ -1,11 +1,19 @@
 import { handler } from '../build/handler.js';
-import { AccessToken } from 'livekit-server-sdk';
+import {AccessToken, WebhookReceiver} from 'livekit-server-sdk';
 import express from 'express';
 import multer from 'multer';
+import { RoomServiceClient, Room } from 'livekit-server-sdk';
+
+const sfuIP = 'ws://127.0.0.1:7880';
+const roomService = new RoomServiceClient(sfuIP, 'devkey', 'secret');
+const receiver = new WebhookReceiver("devkey", "secret");
+const roomIDs = new Set<string>();
+
+
 
 let upload = multer();
 let app = express();
-
+let i:number = 0;
 app.use(express.json());
 
 // for parsing application/x-www-form-urlencoded
@@ -27,9 +35,40 @@ function createToken(roomName: string, participantName: string){
     return {"token": at.toJwt()};
 }
 
-app.post("/create", (req, res)=>{
+app.post("/create-token", (req, res)=>{
     console.log(req.body);
-    res.send(createToken("test", req.body.name))
+    if(!roomIDs.has(req.body.meetingID)){
+        res.send({"token": "invalid meeting id"});
+        return;
+    }
+    res.send(createToken(req.body.meetingID, req.body.name))
+});
+
+app.get("/create-id", (req, res) => {
+    let uuid = crypto.randomUUID();
+    while (roomIDs.has(uuid)){
+        uuid = crypto.randomUUID();
+    }
+
+    roomIDs.add(uuid);
+
+    res.send({meetingID: uuid})
+});
+
+
+app.post("/sfu-webhook", (req, res)=>{
+
+    const event = receiver.receive(req.body, req.get('Authorization'))
+    switch (event.event){
+
+        case "room_finished":
+            roomIDs.delete(event.room?.name as string);
+            break;
+        case "room_started":
+            roomIDs.add(event.room?.name as string);
+
+    }
+
 });
 
 
