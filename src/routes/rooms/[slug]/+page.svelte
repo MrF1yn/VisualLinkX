@@ -65,12 +65,16 @@
 
 <div class="background flex">
     <Header></Header>
-    <div class="container flex items-center  flex-col md:flex-row  overflow-auto p-0 "    >
-        <div id="participant-videos" class="aspect-video h-[95%] overflow-auto ml-auto mr-auto" >
+    <div class="container flex items-center  flex-col md:flex-row  overflow-auto p-3 justify-evenly gap-3"    >
+        <div id="participant-videos" class="aspect-video w-full md:w-auto md:h-[95%]  overflow-auto" >
             <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>
+<!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
+<!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
+<!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
+
 <!--            <video class="rounded-xl bg-card border aspect-video w-full"></video>-->
         </div>
-        <div class="flex flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md md:mr-auto items-center justify-evenly">
+        <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly">
             <Button></Button>
             <Button></Button>
             <Button></Button>
