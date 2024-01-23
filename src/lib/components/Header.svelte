@@ -28,9 +28,9 @@
     .navbar{
 
         align-items: center;
-        margin: 15px;
+        margin: auto;
         width: 100%;
-        height: 80px;
+        height: 65px;
         /*border-radius: 5px;*/
     }
 

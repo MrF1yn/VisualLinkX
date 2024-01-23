@@ -39,7 +39,7 @@
             toast("Invalid Meeting Id!", {
                 description: "Please enter a valid meeting Id"
             });
-            joinInputBorder="border-red-600";
+            joinInputBorder="border-red-600 outline-red-600";
             meetingLink = "";
             return;
         }
