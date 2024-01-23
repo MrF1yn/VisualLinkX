@@ -54,6 +54,15 @@ app.get("/create-id", (req, res) => {
 
     res.send({meetingID: uuid})
 });
+app.post("/validate-id", (req, res) => {
+    if(roomIDs.has(req.body.meetingID)){
+        res.status(200);
+        res.send({status: "valid"});
+        return;
+    }
+    res.status(411);
+    res.send({status: "invalid"});
+});
 
 
 app.post("/sfu-webhook", (req, res)=>{

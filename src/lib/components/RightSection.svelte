@@ -7,9 +7,11 @@
     import * as Card from "$lib/components/ui/card";
     import {Separator} from "$lib/components/ui/separator";
     import {backendIp} from "../../routes/rooms/ClientRoomManager";
+    import {toast} from "svelte-sonner";
 
     let name: string;
     let meetingLink: string;
+    let joinInputBorder: string ="";
     async function create() {
         userName.set(name);
         const response = await fetch(`${backendIp}/create-id`, {
@@ -23,12 +25,30 @@
         goto(`/rooms/${meetingID}`);
     }
 
-    function join(){
+    async function join(){
         userName.set(name);
         console.log(meetingLink);
+        const response = await fetch(`${backendIp}/validate-id`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({meetingID: meetingLink})
+        });
+        if(response.status!=200){
+            toast("Invalid Meeting Id!", {
+                description: "Please enter a valid meeting Id"
+            });
+            joinInputBorder="border-red-600";
+            meetingLink = "";
+            return;
+        }
         goto(`/rooms/${meetingLink}`);
     }
 
+    $: if(meetingLink){
+        joinInputBorder="";
+    }
 
 
 
@@ -55,7 +75,7 @@
                     </div>
                     <div class="flex flex-col space-y-1.5">
                         <Label for="meeting-link">Join</Label>
-                        <Input bind:value={meetingLink} id="meeting-link" name="meeting-link" placeholder="enter your meeting link"/>
+                        <Input class="{joinInputBorder}" bind:value={meetingLink} id="meeting-link" name="meeting-link" placeholder="enter your meeting link"/>
                         <Button disabled={!(meetingLink && name) } on:click={join}>Join a Meeting</Button>
                     </div>
 

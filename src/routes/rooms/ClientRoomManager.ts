@@ -9,6 +9,8 @@ import {
 } from "./ClientRoomListeners";
 import {goto} from "$app/navigation";
 import {toast} from "svelte-sonner";
+import * as url from "url";
+import {page} from "$app/stores";
 
 export let roomManager: ClientRoomManager;
 export const sfuIp = "ws://127.0.0.1:7880";
@@ -62,7 +64,12 @@ export class ClientRoomManager{
             toast('Failed to Join Meeting!', {
                 description: "Invalid Meeting id."
             });
-            history.back();
+            let path:any;
+            page.subscribe((n)=>{
+                path = n.url;
+            });
+            goto(window.location.origin);
+
             return;
         }
         this.room.prepareConnection(sfuIp, this.token);
