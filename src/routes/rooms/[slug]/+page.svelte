@@ -30,8 +30,14 @@
         const p = clientRoomManager.room.localParticipant;
 
 
-        const localVid = (document.querySelector("#local") as HTMLVideoElement );
-        p.getTrack(Track.Source.Camera)?.track?.attach(localVid);
+        // const localVid = (document.querySelector("#local") as HTMLVideoElement );
+        let videoItem = new ParticipantVideo({
+            target: document.querySelector("#participant-videos") as HTMLElement,
+            props:{
+                track: p.getTrack(Track.Source.Camera)?.track as Track,
+                ide: p.sid
+            }
+        })
 
         let card = new ParticipantItem({
             target: document.querySelector("#participants") as HTMLElement,
@@ -40,12 +46,18 @@
             }
         });
         clientRoomManager.participantItems.set(p.sid, card);
+        clientRoomManager.participantVideoItems.set(p.sid, videoItem);
         p.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
             const participantItem = (clientRoomManager.participantItems.get(p.sid) as ParticipantItem);
-            if(speaking)
+            const participantVideoItem = (clientRoomManager.participantVideoItems.get(p.sid) as ParticipantVideo);
+            if(speaking) {
                 participantItem.activate();
-            else
+                participantVideoItem.activate();
+            }
+            else {
                 participantItem.deActivate();
+                participantVideoItem.deActivate();
+            }
 
         });
 
@@ -66,8 +78,9 @@
 <div class="background flex">
     <Header></Header>
     <div class="container flex items-center  flex-col md:flex-row  overflow-auto p-3 justify-evenly gap-3"    >
+        <div id="participants" class="hidden"></div>
         <div id="participant-videos" class="aspect-video w-full md:w-auto md:h-[95%]  overflow-auto" >
-            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>
+<!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->

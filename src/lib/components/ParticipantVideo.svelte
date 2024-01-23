@@ -1,13 +1,24 @@
 <script lang="ts">
-     import type {RemoteTrack} from "livekit-client";
+    import type {RemoteTrack, Track} from "livekit-client";
      import {onMount} from "svelte";
 
      export let ide: string = "";
-     export let track: RemoteTrack;
+     export let track: Track;
+
+     let color = "";
 
      onMount(()=>{
          track.attach(document.getElementById(ide) as HTMLVideoElement);
      });
+
+
+     export function activate() {
+         color = "border-green-500";
+     }
+
+     export function deActivate() {
+         color = "";
+     }
 
 
 
@@ -20,7 +31,7 @@
 
 </script>
 
-<video id="{ide}" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>
+<video id="{ide}" class="rounded-xl bg-card border aspect-video w-full {color}" autoplay ></video>
 
 <style>
 

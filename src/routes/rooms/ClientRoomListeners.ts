@@ -22,6 +22,13 @@ export function handleTrackSubscribed(track: RemoteTrack, publication: RemoteTra
                 }
             });
             roomManager.participantVideoItems.set(participant.sid, vidElm);
+            participant.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
+                const participantVideoItem = (roomManager.participantVideoItems.get(participant.sid) as ParticipantVideo);
+                if(speaking)
+                    participantVideoItem.activate();
+                else
+                    participantVideoItem.deActivate();
+            });
 
         }
     }
@@ -49,6 +56,7 @@ export function handleParticipantConnected(participant: RemoteParticipant) {
 }
 
 function participantConnected(participant: RemoteParticipant){
+
     if(roomManager.participantItems.has(participant.sid))return;
     let card = new ParticipantItem({
         target: document.querySelector("#participants") as HTMLElement,
