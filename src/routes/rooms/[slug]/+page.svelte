@@ -18,10 +18,11 @@
 
     export let data: PageData;
     let micIcon: IconType = faMicrophone;
+    let vidIcon: IconType = faVideo;
     let vMuted: boolean;
     let clientRoomManager: ClientRoomManager;
 
-    async function onMuteButtonClick(e: any){
+    async function onMicButtonClick(e: any){
         if(!clientRoomManager)return;
         let p = clientRoomManager.room.localParticipant;
         if(!p)return;
@@ -36,10 +37,30 @@
         updateLocalMuteButtonUi(track);
 
     }
+    async function onVideoButtonClick(e: any) {
+        if (!clientRoomManager) return;
+        let p = clientRoomManager.room.localParticipant;
+        if (!p) return;
+        const track = p.getTrack(Track.Source.Camera)?.track;
+        if (!track) return;
+        if (track.isMuted) {
+            await track.unmute();
+            updateLocalMuteButtonUi(track);
+            return;
+        }
+        await track.mute();
+        updateLocalMuteButtonUi(track);
 
+    }
     function updateLocalMuteButtonUi(track: LocalTrack | undefined){
         if (!track)return;
-        micIcon =  track.isMuted?faMicrophoneSlash:faMicrophone;
+        if(track.source===Track.Source.Microphone) {
+            micIcon = track.isMuted ? faMicrophoneSlash : faMicrophone;
+            return;
+        }
+        if(track.source===Track.Source.Camera){
+            vidIcon = track.isMuted ? faVideoSlash : faVideo;
+        }
     }
 
     onMount(async ()=>{
@@ -89,6 +110,7 @@
 
         });
         updateLocalMuteButtonUi(p.getTrack(Track.Source.Microphone)?.track);
+        updateLocalMuteButtonUi(p.getTrack(Track.Source.Camera)?.track);
 
 
 
@@ -120,11 +142,11 @@
             <Button  class="h-full w-[20%] md:w-full md:h-[20%]" >
                 <Icon data={faUserGroup} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button  variant="{micIcon===faMicrophoneSlash?'destructive':'default'}"  class="h-full w-[20%] md:w-full md:h-[20%]" on:click={onMuteButtonClick}>
+            <Button  variant="{micIcon===faMicrophoneSlash?'destructive':'default'}"  class="h-full w-[20%] md:w-full md:h-[20%]" on:click={onMicButtonClick}>
                 <Icon data={micIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button  class="h-full w-[20%] md:w-full md:h-[20%]" on:click={(e)=>{vMuted=!vMuted;}}>
-                <Icon data={vMuted?faVideoSlash:faVideo} scale={2.5} class="text-palette1-3"></Icon>
+            <Button variant="{micIcon===faVideoSlash?'destructive':'default'}" class="h-full w-[20%] md:w-full md:h-[20%]" on:click={onVideoButtonClick}>
+                <Icon data={vidIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
             <Button  class="h-full w-[20%] md:w-full md:h-[20%]">
                 <Icon data={faGear} scale={2.5} class="text-palette1-3"></Icon>
