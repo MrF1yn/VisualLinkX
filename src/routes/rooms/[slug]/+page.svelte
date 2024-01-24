@@ -7,17 +7,41 @@
     import {page} from '$app/stores'
     import type {PageData} from './$types';
     import * as Card from "$lib/components/ui/card";
-    import {ParticipantEvent, Track} from "livekit-client";
+    import {LocalParticipant, LocalTrack, type LocalTrackPublication, ParticipantEvent, Track} from "livekit-client";
 
     import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
     import {ClientRoomManager} from "../ClientRoomManager";
     import {Button} from "$lib/components/ui/button";
-    import {faGear, faMicrophone, faMicrophoneSlash, faVideo, faVideoSlash, faPeopleGroup} from "@fortawesome/free-solid-svg-icons";
+    import {faGear, faMicrophone, faMicrophoneSlash, faVideo, faVideoSlash, faUserGroup} from "@fortawesome/free-solid-svg-icons";
     import Icon from "svelte-awesome";
+    import type {IconType} from "svelte-awesome/components/Icon.svelte";
 
     export let data: PageData;
-    let muted: boolean;
+    let micIcon: IconType = faMicrophone;
     let vMuted: boolean;
+    let clientRoomManager: ClientRoomManager;
+
+    async function onMuteButtonClick(e: any){
+        if(!clientRoomManager)return;
+        let p = clientRoomManager.room.localParticipant;
+        if(!p)return;
+        const track = p.getTrack(Track.Source.Microphone)?.track;
+        if(!track)return;
+        if(track.isMuted) {
+            await track.unmute();
+            updateLocalMuteButtonUi(track);
+            return;
+        }
+        await track.mute();
+        updateLocalMuteButtonUi(track);
+
+    }
+
+    function updateLocalMuteButtonUi(track: LocalTrack | undefined){
+        if (!track)return;
+        micIcon =  track.isMuted?faMicrophoneSlash:faMicrophone;
+    }
+
     onMount(async ()=>{
         let name = "";
         userName.subscribe((n)=>{
@@ -29,7 +53,7 @@
 
 
         if(!name)return;
-        const clientRoomManager = new ClientRoomManager(meetingID, name);
+        clientRoomManager = new ClientRoomManager(meetingID, name);
         await clientRoomManager.init();
         const p = clientRoomManager.room.localParticipant;
 
@@ -64,6 +88,7 @@
             }
 
         });
+        updateLocalMuteButtonUi(p.getTrack(Track.Source.Microphone)?.track);
 
 
 
@@ -91,17 +116,17 @@
 
 <!--            <video class="rounded-xl bg-card border aspect-video w-full"></video>-->
         </div>
-        <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly">
-            <Button variant="outline" >
-                <Icon data={faPeopleGroup} scale={2.5} class="text-palette1-3"></Icon>
+        <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly p-1 md:p-3">
+            <Button  class="h-full w-[20%] md:w-full md:h-[20%]" >
+                <Icon data={faUserGroup} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button variant="outline" on:click={(e)=>{muted=!muted;}}>
-                <Icon data={muted?faMicrophoneSlash:faMicrophone} scale={2.5} class="text-palette1-3"></Icon>
+            <Button  variant="{micIcon===faMicrophoneSlash?'destructive':'default'}"  class="h-full w-[20%] md:w-full md:h-[20%]" on:click={onMuteButtonClick}>
+                <Icon data={micIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button variant="outline" on:click={(e)=>{vMuted=!vMuted;}}>
+            <Button  class="h-full w-[20%] md:w-full md:h-[20%]" on:click={(e)=>{vMuted=!vMuted;}}>
                 <Icon data={vMuted?faVideoSlash:faVideo} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button variant="outline" >
+            <Button  class="h-full w-[20%] md:w-full md:h-[20%]">
                 <Icon data={faGear} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
 
