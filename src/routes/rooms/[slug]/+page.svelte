@@ -12,14 +12,13 @@
     import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
     import {ClientRoomManager} from "../ClientRoomManager";
     import {Button} from "$lib/components/ui/button";
-    import {faGear, faMicrophone, faMicrophoneSlash, faVideo, faVideoSlash, faUserGroup} from "@fortawesome/free-solid-svg-icons";
+    import {faGear, faMicrophone, faMicrophoneSlash, faVideo, faVideoSlash, faUserGroup, faArrowRightFromBracket} from "@fortawesome/free-solid-svg-icons";
     import Icon from "svelte-awesome";
     import type {IconType} from "svelte-awesome/components/Icon.svelte";
 
     export let data: PageData;
     let micIcon: IconType = faMicrophone;
     let vidIcon: IconType = faVideo;
-    let vMuted: boolean;
     let clientRoomManager: ClientRoomManager;
 
     async function onMicButtonClick(e: any){
@@ -139,16 +138,19 @@
 <!--            <video class="rounded-xl bg-card border aspect-video w-full"></video>-->
         </div>
         <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly p-1 md:p-3">
-            <Button  class="h-full w-[20%] md:w-full md:h-[20%]" >
+            <Button  class="h-full w-[20%] md:w-full md:h-[15%]" >
                 <Icon data={faUserGroup} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button  variant="{micIcon===faMicrophoneSlash?'destructive':'default'}"  class="h-full w-[20%] md:w-full md:h-[20%]" on:click={onMicButtonClick}>
+            <Button  variant="{micIcon===faMicrophoneSlash?'destructive':'default'}"  class="h-full w-[20%] md:w-full md:h-[15%]" on:click={onMicButtonClick}>
                 <Icon data={micIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button variant="{micIcon===faVideoSlash?'destructive':'default'}" class="h-full w-[20%] md:w-full md:h-[20%]" on:click={onVideoButtonClick}>
+            <Button variant="{vidIcon===faVideoSlash?'destructive':'default'}" class="h-full w-[20%] md:w-full md:h-[15%]" on:click={onVideoButtonClick}>
                 <Icon data={vidIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button  class="h-full w-[20%] md:w-full md:h-[20%]">
+            <Button variant="destructive" class="h-full w-[20%] md:w-full md:h-[15%]">
+                <Icon data={faArrowRightFromBracket} scale={2.5} class="text-palette1-3"></Icon>
+            </Button>
+            <Button  class="h-full w-[20%] md:w-full md:h-[15%]">
                 <Icon data={faGear} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
 
