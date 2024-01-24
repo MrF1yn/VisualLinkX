@@ -12,8 +12,12 @@
     import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
     import {ClientRoomManager} from "../ClientRoomManager";
     import {Button} from "$lib/components/ui/button";
+    import {faGear, faMicrophone, faMicrophoneSlash, faVideo, faVideoSlash, faPeopleGroup} from "@fortawesome/free-solid-svg-icons";
+    import Icon from "svelte-awesome";
 
     export let data: PageData;
+    let muted: boolean;
+    let vMuted: boolean;
     onMount(async ()=>{
         let name = "";
         userName.subscribe((n)=>{
@@ -88,10 +92,20 @@
 <!--            <video class="rounded-xl bg-card border aspect-video w-full"></video>-->
         </div>
         <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly">
-            <Button></Button>
-            <Button></Button>
-            <Button></Button>
-            <Button></Button>
+            <Button variant="outline" >
+                <Icon data={faPeopleGroup} scale={2.5} class="text-palette1-3"></Icon>
+            </Button>
+            <Button variant="outline" on:click={(e)=>{muted=!muted;}}>
+                <Icon data={muted?faMicrophoneSlash:faMicrophone} scale={2.5} class="text-palette1-3"></Icon>
+            </Button>
+            <Button variant="outline" on:click={(e)=>{vMuted=!vMuted;}}>
+                <Icon data={vMuted?faVideoSlash:faVideo} scale={2.5} class="text-palette1-3"></Icon>
+            </Button>
+            <Button variant="outline" >
+                <Icon data={faGear} scale={2.5} class="text-palette1-3"></Icon>
+            </Button>
+
+
         </div>
     </div>
 
