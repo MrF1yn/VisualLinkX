@@ -138,19 +138,19 @@
 <!--            <video class="rounded-xl bg-card border aspect-video w-full"></video>-->
         </div>
         <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly p-1 md:p-3">
-            <Button  class="h-full w-[20%] md:w-full md:h-[15%]" >
+            <Button  class="h-full w-[15%] md:w-full md:h-[15%]" >
                 <Icon data={faUserGroup} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button  variant="{micIcon===faMicrophoneSlash?'destructive':'default'}"  class="h-full w-[20%] md:w-full md:h-[15%]" on:click={onMicButtonClick}>
+            <Button  variant="{micIcon===faMicrophoneSlash?'destructive':'default'}"  class="h-full w-[15%] md:w-full md:h-[15%]" on:click={onMicButtonClick}>
                 <Icon data={micIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button variant="{vidIcon===faVideoSlash?'destructive':'default'}" class="h-full w-[20%] md:w-full md:h-[15%]" on:click={onVideoButtonClick}>
+            <Button variant="{vidIcon===faVideoSlash?'destructive':'default'}" class="h-full w-[15%] md:w-full md:h-[15%]" on:click={onVideoButtonClick}>
                 <Icon data={vidIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button variant="destructive" class="h-full w-[20%] md:w-full md:h-[15%]">
+            <Button  class="h-full w-[15%] md:w-full md:h-[15%] hover:bg-destructive transition duration-300 ease-in-out">
                 <Icon data={faArrowRightFromBracket} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button  class="h-full w-[20%] md:w-full md:h-[15%]">
+            <Button  class="h-full w-[15%] md:w-full md:h-[15%]">
                 <Icon data={faGear} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
 
