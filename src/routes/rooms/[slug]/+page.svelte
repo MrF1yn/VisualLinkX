@@ -17,6 +17,7 @@
     import Icon from "svelte-awesome";
     import type {IconType} from "svelte-awesome/components/Icon.svelte";
     import {goto} from "$app/navigation";
+    import * as url from "url";
 
     export let data: PageData;
     let micIcon: IconType = faMicrophoneLines;
@@ -62,6 +63,13 @@
         if(track.source===Track.Source.Camera){
             vidIcon = track.isMuted ? faVideoSlash : faVideo;
         }
+    }
+
+    function copyMeetingLink(){
+        navigator.clipboard.writeText(window.location.href);
+        toast("Copied Meeting Link!", {
+            description:"Meeting link is successfully copied to your clipboard."
+        })
     }
 
     async function disconnect(){
@@ -143,10 +151,12 @@
     <Header></Header>
     <div class="container flex items-center  flex-col md:flex-row  overflow-auto p-3 justify-evenly gap-3"    >
         <div id="participants" class="hidden"></div>
-        <Button variant="ghost" class="w-fit h-fit mt-auto mb-4">
-            <Icon data="{faCopy}" scale={2}></Icon>
+        <Button variant="outline" class="w-fit h-fit mt-auto mb-4 mr-0 flex items-center gap-2 p-3"
+        on:click={copyMeetingLink}>
+            <Icon data="{faCopy}" scale={1.5}></Icon>
+            <div>Copy Meeting Link</div>
         </Button>
-        <div id="participant-videos" class="aspect-video w-full md:w-auto md:h-[95%]  overflow-auto" >
+        <div id="participant-videos" class="aspect-video w-full md:w-auto md:h-[95%]  overflow-auto border-white border-4" >
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
@@ -154,6 +164,7 @@
 
 <!--            <video class="rounded-xl bg-card border aspect-video w-full"></video>-->
         </div>
+
         <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly p-1 md:p-3
         shadow-[0_0px_90px_5px_rgba(101,40,200)]">
             <Button  class="h-full w-[15%] md:w-full md:h-[15%]" >
