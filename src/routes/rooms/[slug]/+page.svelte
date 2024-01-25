@@ -12,9 +12,11 @@
     import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
     import {ClientRoomManager} from "../ClientRoomManager";
     import {Button} from "$lib/components/ui/button";
-    import {faGear, faMicrophoneLines, faMicrophoneLinesSlash, faVideo, faVideoSlash, faUserGroup, faArrowRightFromBracket} from "@fortawesome/free-solid-svg-icons";
+    import {faGear, faMicrophoneLines, faMicrophoneLinesSlash, faVideo, faVideoSlash, faUserGroup
+        , faArrowRightFromBracket, faCopy} from "@fortawesome/free-solid-svg-icons";
     import Icon from "svelte-awesome";
     import type {IconType} from "svelte-awesome/components/Icon.svelte";
+    import {goto} from "$app/navigation";
 
     export let data: PageData;
     let micIcon: IconType = faMicrophoneLines;
@@ -60,6 +62,17 @@
         if(track.source===Track.Source.Camera){
             vidIcon = track.isMuted ? faVideoSlash : faVideo;
         }
+    }
+
+    async function disconnect(){
+        if (!clientRoomManager) return;
+        let p = clientRoomManager.room.localParticipant;
+        if (!p) return;
+        await clientRoomManager.room.disconnect();
+        toast("Disconnected!", {
+            description: "Successfully disconnected from the meeting."
+        })
+        await goto(window.location.origin);
     }
 
     onMount(async ()=>{
@@ -130,6 +143,9 @@
     <Header></Header>
     <div class="container flex items-center  flex-col md:flex-row  overflow-auto p-3 justify-evenly gap-3"    >
         <div id="participants" class="hidden"></div>
+        <Button variant="ghost" class="w-fit h-fit mt-auto mb-4">
+            <Icon data="{faCopy}" scale={2}></Icon>
+        </Button>
         <div id="participant-videos" class="aspect-video w-full md:w-auto md:h-[95%]  overflow-auto" >
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
@@ -149,7 +165,8 @@
             <Button variant="{vidIcon===faVideoSlash?'destructive':'default'}" class="h-full w-[15%] md:w-full md:h-[15%]" on:click={onVideoButtonClick}>
                 <Icon data={vidIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button  class="h-full w-[15%] md:w-full md:h-[15%] hover:bg-destructive transition duration-300 ease-in-out">
+            <Button  class="h-full w-[15%] md:w-full md:h-[15%] hover:bg-destructive transition duration-300 ease-in-out"
+            on:click={disconnect}>
                 <Icon data={faArrowRightFromBracket} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
             <Button  class="h-full w-[15%] md:w-full md:h-[15%]">
