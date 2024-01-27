@@ -13,7 +13,7 @@
 
 
      export function activate() {
-         color = "border-green-500 border-2";
+         color = "border-green-500 ";
      }
 
      export function deActivate() {
@@ -31,7 +31,7 @@
 
 </script>
 
-<video id="{ide}" class="rounded-xl bg-card border aspect-video w-full {color} " autoplay ></video>
+<video id="{ide}" class="rounded-xl bg-card border-2 aspect-video w-full {color} box-border overflow-hidden" autoplay ></video>
 
 <style>
 

@@ -7,17 +7,20 @@
     import {page} from '$app/stores'
     import type {PageData} from './$types';
     import * as Card from "$lib/components/ui/card";
-    import {LocalParticipant, LocalTrack, type LocalTrackPublication, ParticipantEvent, Track} from "livekit-client";
+    import {LocalTrack, ParticipantEvent, Track} from "livekit-client";
+    import * as Tooltip from "$lib/components/ui/tooltip";
 
     import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
     import {ClientRoomManager} from "../ClientRoomManager";
     import {Button} from "$lib/components/ui/button";
+    import * as Sheet from "$lib/components/ui/sheet";
     import {faGear, faMicrophoneLines, faMicrophoneLinesSlash, faVideo, faVideoSlash, faUserGroup
         , faArrowRightFromBracket, faCopy} from "@fortawesome/free-solid-svg-icons";
     import Icon from "svelte-awesome";
     import type {IconType} from "svelte-awesome/components/Icon.svelte";
     import {goto} from "$app/navigation";
     import * as url from "url";
+    import ParticipantList from "$lib/components/ParticipantList.svelte";
 
     export let data: PageData;
     let micIcon: IconType = faMicrophoneLines;
@@ -151,20 +154,37 @@
     <Header></Header>
     <div class="container flex items-center  flex-col md:flex-row  overflow-auto p-3 justify-evenly gap-3"    >
         <div id="participants" class="hidden"></div>
-        <Button variant="outline" class="w-fit h-fit mt-auto mb-4 mr-0 flex items-center gap-2 p-3"
-        on:click={copyMeetingLink}>
-            <Icon data="{faCopy}" scale={1.5}></Icon>
-            <div>Copy Meeting Link</div>
-        </Button>
+        <Tooltip.Root>
+            <Tooltip.Trigger asChild let:builder>
+                <Button builders={[builder]} variant="outline" class="w-fit h-fit mt-auto mb-4 mr-0 flex flex-col items-center gap-2 p-3 overflow-auto"
+                        on:click={copyMeetingLink}>
+                    <Icon data="{faCopy}" scale={1.5}></Icon>
+                </Button>
+            </Tooltip.Trigger>
+            <Tooltip.Content>
+                <p>Copy Meeting Link</p>
+            </Tooltip.Content>
+        </Tooltip.Root>
+
         <div id="participant-videos" class="aspect-video w-full md:w-auto md:h-[95%]  overflow-auto" >
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full border-green-500 border-2" autoplay ></video>-->
         </div>
 
         <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly p-1 md:p-3
         shadow-[0_0px_90px_5px_rgba(101,40,200)]">
-            <Button  class="h-full w-[15%] md:w-full md:h-[15%]" >
-                <Icon data={faUserGroup} scale={2.5} class="text-palette1-3"></Icon>
-            </Button>
+
+
+            <Sheet.Root>
+                <Sheet.Trigger asChild let:builder>
+                    <Button builders={[builder]} class="h-full w-[15%] md:w-full md:h-[15%]" >
+                        <Icon data={faUserGroup} scale={2.5} class="text-palette1-3"></Icon>
+                    </Button>
+                </Sheet.Trigger>
+                <Sheet.Content side="right">
+                    <ParticipantList/>
+                </Sheet.Content>
+            </Sheet.Root>
+
             <Button  variant="{micIcon===faMicrophoneLinesSlash?'destructive':'default'}"  class="h-full w-[15%] md:w-full md:h-[15%]" on:click={onMicButtonClick}>
                 <Icon data={micIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
