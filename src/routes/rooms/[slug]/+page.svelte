@@ -132,11 +132,6 @@
         <div id="participants" class="hidden"></div>
         <div id="participant-videos" class="aspect-video w-full md:w-auto md:h-[95%]  overflow-auto" >
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
-<!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
-<!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
-<!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
-
-<!--            <video class="rounded-xl bg-card border aspect-video w-full"></video>-->
         </div>
         <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly p-1 md:p-3
         shadow-[0_0px_90px_5px_rgba(101,40,200)]">
