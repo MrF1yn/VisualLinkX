@@ -156,8 +156,8 @@
             <Icon data="{faCopy}" scale={1.5}></Icon>
             <div>Copy Meeting Link</div>
         </Button>
-        <div id="participant-videos" class="aspect-video w-full md:w-auto md:h-[95%]  overflow-auto border-white border-4" >
-<!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full" autoplay ></video>-->
+        <div id="participant-videos" class="aspect-video w-full md:w-auto md:h-[95%]  overflow-auto" >
+<!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full border-green-500 border-2" autoplay ></video>-->
         </div>
 
         <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly p-1 md:p-3

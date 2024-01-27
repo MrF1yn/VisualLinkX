@@ -28,12 +28,15 @@
     async function join(){
         userName.set(name);
         console.log(meetingLink);
+        let meetingID = meetingLink.split("rooms/").pop();
+        if(!meetingID)
+            meetingID = meetingLink;
         const response = await fetch(`${backendIp}/validate-id`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
-            body: JSON.stringify({meetingID: meetingLink})
+            body: JSON.stringify({meetingID: meetingID})
         });
         if(response.status!=200){
             toast("Invalid Meeting Id!", {
@@ -43,7 +46,7 @@
             meetingLink = "";
             return;
         }
-        goto(`/rooms/${meetingLink}`);
+        goto(`/rooms/${meetingID}`);
     }
 
     $: if(meetingLink){
