@@ -1,32 +1,52 @@
 <script lang="ts">
 
-import {Button} from "$lib/components/ui/button";
-import {Label} from "$lib/components/ui/label";
-import {Input} from "$lib/components/ui/input";
-import * as Sheet from "$lib/components/ui/sheet";
+    import {Button} from "$lib/components/ui/button";
+    import {Label} from "$lib/components/ui/label";
+    import {Input} from "$lib/components/ui/input";
+    import * as Sheet from "$lib/components/ui/sheet";
+    import {onMount} from "svelte";
+    import {roomManager} from "../../routes/rooms/ClientRoomManager";
+    import ParticipantItem from "$lib/components/ParticipantItem.svelte";
+
+
+    let sec = new Map();
+    sec.set('TEST', 'HELLO');
+
+
+    let participants: string[] = [];
+    $: if(roomManager.participantVideoItems){
+        participants = Array.from(roomManager.participantVideoItems.keys());
+    }
+    // $: for(let participant of roomManager.room.participants.values()){
+    //     let card = new ParticipantItem({
+    //         target: document.getElementById("participants") as HTMLElement,
+    //         props: {
+    //                 participantName: participant.name
+    //         }
+    //     });
+    //     roomManager.participantItems.set(participant.sid, card);
+    // }
 </script>
 
 <Sheet.Header>
-    <Sheet.Title>Edit profile</Sheet.Title>
+    <Sheet.Title>Participants</Sheet.Title>
     <Sheet.Description>
-        Make changes to your profile here. Click save when you're done.
+        List of all participants currently in the meeting.
     </Sheet.Description>
 </Sheet.Header>
 <div class="grid gap-4 py-4">
-    <div class="grid grid-cols-4 items-center gap-4">
-        <Label for="name" class="text-right">Name</Label>
-        <Input id="name" value="Pedro Duarte" class="col-span-3" />
-    </div>
-    <div class="grid grid-cols-4 items-center gap-4">
-        <Label for="username" class="text-right">Username</Label>
-        <Input id="username" value="@peduarte" class="col-span-3" />
-    </div>
+    <!--{#each participants as participant}-->
+        <div class="border-white border-2">
+            {participants.toLocaleString()}
+        </div>
+    <!--{/each}-->
 </div>
 <Sheet.Footer>
-    <Sheet.Close asChild let:builder>
-        <Button builders={[builder]} type="submit">Save changes</Button>
-    </Sheet.Close>
+    <!--    <Sheet.Close asChild let:builder>-->
+    <!--        <Button builders={[builder]} type="submit">Save changes</Button>-->
+    <!--    </Sheet.Close>-->
 </Sheet.Footer>
+
 
 <style>
 

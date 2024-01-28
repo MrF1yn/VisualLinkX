@@ -88,6 +88,7 @@
 
     onMount(async ()=>{
         //TODO: VIDEO ELEMENT BORDER SIZE INCREASE AND ADD GREEN GLOW ON SOUND
+
         let name = "";
         userName.subscribe((n)=>{
             name = n;
@@ -152,8 +153,8 @@
 
 <div class="background flex">
     <Header></Header>
+    <div id="participants" class="hidden"></div>
     <div class="container flex items-center  flex-col md:flex-row  overflow-auto p-3 justify-evenly gap-3"    >
-        <div id="participants" class="hidden"></div>
         <Tooltip.Root>
             <Tooltip.Trigger asChild let:builder>
                 <Button builders={[builder]} variant="outline" class="w-fit h-fit mt-auto mb-4 mr-0 flex flex-col items-center gap-2 p-3 overflow-auto"
@@ -181,7 +182,7 @@
                     </Button>
                 </Sheet.Trigger>
                 <Sheet.Content side="right">
-                    <ParticipantList/>
+                    <ParticipantList></ParticipantList>
                 </Sheet.Content>
             </Sheet.Root>
 
