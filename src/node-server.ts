@@ -63,6 +63,24 @@ app.post("/validate-id", (req, res) => {
     res.status(411);
     res.send({status: "invalid"});
 });
+app.post("/mute-unmute-track", (req, res) => {
+    if (!roomIDs.has(req.body.meetingID)) {
+        res.status(411);
+        res.send({reason: "Invalid Meeting id"});
+        return;
+    }
+    const meetingID: string = req.body.meetingID;
+    const participantID: string = req.body.participantID;
+    const trackSid: string = req.body.trackSid;
+    const muted: boolean = req.body.muted;
+
+    if(!(participantID && trackSid)){
+
+    }
+
+    res.status(411);
+    res.send({status: "invalid"});
+});
 
 
 app.post("/sfu-webhook", (req, res)=>{
