@@ -6,6 +6,7 @@
     import {Button} from "$lib/components/ui/button";
     import {faMicrophone, faMicrophoneSlash, faVideo, faVideoSlash} from "@fortawesome/free-solid-svg-icons";
     import Icon from "svelte-awesome";
+    import {TrackSource} from "livekit-server-sdk";
     export let participant: Participant;
     export let room: Room;
     let compRef: SvelteComponent;

@@ -15,10 +15,11 @@
     async function create() {
         userName.set(name);
         const response = await fetch(`${backendIp}/create-id`, {
-            method: "GET",
+            method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
-            }
+            },
+            body: JSON.stringify({participantID: name})
         });
         const meetingID = (await response.json()).meetingID;
 
