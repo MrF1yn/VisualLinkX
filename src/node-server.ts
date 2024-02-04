@@ -56,7 +56,7 @@ app.post("/create-token", (req, res)=>{
 
 app.post("/create-id", (req, res) => {
     let uuid = crypto.randomUUID();
-    const participantID = req.body.name?.replaceAll(" ", "-");
+    const participantID = req.body.participantID?.replaceAll(" ", "-");
     if(!participantID){
         res.send({"token": "Invalid Participant id"});
         return;
