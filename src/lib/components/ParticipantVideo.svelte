@@ -31,7 +31,12 @@
 
 </script>
 
-<video id="{ide}" class="rounded-xl bg-card border-2 aspect-video w-full {color} box-border overflow-hidden" autoplay ></video>
+<div class="aspect-video w-full overflow-hidden">
+    <video id="{ide}" class="rounded-xl bg-card border-2 aspect-video w-full {color} box-border overflow-hidden" autoplay >
+
+    </video>
+</div>
+
 
 <style>
 

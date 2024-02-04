@@ -11,7 +11,7 @@
     import * as Tooltip from "$lib/components/ui/tooltip";
 
     import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
-    import {ClientRoomManager, roomManager} from "../ClientRoomManager";
+    import {ClientRoomManager} from "../ClientRoomManager";
     import {Button} from "$lib/components/ui/button";
     import * as Sheet from "$lib/components/ui/sheet";
     import {faGear, faMicrophoneLines, faMicrophoneLinesSlash, faVideo, faVideoSlash, faUserGroup
