@@ -80,10 +80,10 @@ app.post("/validate-id", (req, res) => {
 });
 app.post("/mute-unmute-track", (req, res) => {
     const meetingID: string = req.body.meetingID;
-    const ownerID: string = req.body.ownerID;
-    const participantID: string = req.body.participantID;
-    const trackSid: string = req.body.trackSid;
-    const muted: boolean = req.body.muted;
+        const ownerID: string = req.body.ownerID;
+        const participantID: string = req.body.participantID;
+        const trackSid: string = req.body.trackSid;
+        const muted: boolean = req.body.muted;
 
     if (!roomIDs.has(meetingID)) {
         res.status(411);
