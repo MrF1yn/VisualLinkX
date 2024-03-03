@@ -20,6 +20,7 @@
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify({participantID: name})
+
         });
         const meetingID = (await response.json()).meetingID;
 

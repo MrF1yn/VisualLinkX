@@ -35,13 +35,14 @@
         if(!track)return;
         if(track.isMuted) {
             await track.unmute();
-            updateLocalMuteButtonUi(track);
+            // updateLocalMuteButtonUi(track);
             return;
         }
         await track.mute();
-        updateLocalMuteButtonUi(track);
+        // updateLocalMuteButtonUi(track);
 
     }
+
     async function onVideoButtonClick(e: any) {
         if (!clientRoomManager) return;
         let p = clientRoomManager.room.localParticipant;
@@ -50,23 +51,25 @@
         if (!track) return;
         if (track.isMuted) {
             await track.unmute();
-            updateLocalMuteButtonUi(track);
+            // updateLocalMuteButtonUi(track);
             return;
         }
         await track.mute();
-        updateLocalMuteButtonUi(track);
+        // updateLocalMuteButtonUi(track);
 
     }
-    function updateLocalMuteButtonUi(track: LocalTrack | undefined){
-        if (!track)return;
-        if(track.source===Track.Source.Microphone) {
-            micIcon = track.isMuted ? faMicrophoneLinesSlash : faMicrophoneLines;
-            return;
-        }
-        if(track.source===Track.Source.Camera){
-            vidIcon = track.isMuted ? faVideoSlash : faVideo;
-        }
-    }
+    // function updateLocalMuteButtonUi(track: LocalTrack | undefined){
+    //     if (!track)return;
+    //     if(track.source===Track.Source.Microphone) {
+    //         micIcon = track.isMuted ? faMicrophoneLinesSlash : faMicrophoneLines;
+    //         return;
+    //     }
+    //     if(track.source===Track.Source.Camera){
+    //         vidIcon = track.isMuted ? faVideoSlash : faVideo;
+    //     }
+    // }
+
+
 
     function copyMeetingLink(){
         navigator.clipboard.writeText(window.location.href);
@@ -103,6 +106,25 @@
         await clientRoomManager.init();
         const p = clientRoomManager.room.localParticipant;
 
+        p.on(ParticipantEvent.TrackMuted, (track)=>{
+            if(track.source===Track.Source.Microphone) {
+                micIcon = faMicrophoneLinesSlash;
+                return;
+            }
+            if(track.source===Track.Source.Camera){
+                vidIcon = faVideoSlash;
+            }
+        });
+        p.on(ParticipantEvent.TrackUnmuted, (track) => {
+            if (track.source === Track.Source.Microphone) {
+                micIcon = faMicrophoneLines;
+                return;
+            }
+            if (track.source === Track.Source.Camera) {
+                vidIcon = faVideo;
+            }
+        });
+
 
         // const localVid = (document.querySelector("#local") as HTMLVideoElement );
         let videoItem = new ParticipantVideo({
@@ -134,8 +156,8 @@
             }
 
         });
-        updateLocalMuteButtonUi(p.getTrack(Track.Source.Microphone)?.track);
-        updateLocalMuteButtonUi(p.getTrack(Track.Source.Camera)?.track);
+        // updateLocalMuteButtonUi(p.getTrack(Track.Source.Microphone)?.track);
+        // updateLocalMuteButtonUi(p.getTrack(Track.Source.Camera)?.track);
 
 
 

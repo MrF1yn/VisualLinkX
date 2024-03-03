@@ -5,7 +5,7 @@ import multer from 'multer';
 import { RoomServiceClient, Room } from 'livekit-server-sdk';
 
 const sfuIP = '127.0.0.1:7880';
-const roomService = new RoomServiceClient(`https://${sfuIP}`, 'devkey', 'secret');
+const roomService = new RoomServiceClient(`http://${sfuIP}`, 'devkey', 'secret');
 const receiver = new WebhookReceiver("devkey", "secret");
 const roomIDs = new Map<string, string>(); //roomID, Owner
 // const roomIDMap = new Map<string, string>(); //roomID, Owner
@@ -37,7 +37,7 @@ function createToken(roomName: string, participantName: string){
 
 app.post("/create-token", (req, res)=>{
     console.log(req.body);
-    const participantID = req.body.name?.replaceAll(" ", "-");
+    const participantID = req.body.name;
     const meetingID = req.body.meetingID;
     if(!participantID){
         res.send({"token": "Invalid Participant id"});
@@ -56,7 +56,7 @@ app.post("/create-token", (req, res)=>{
 
 app.post("/create-id", (req, res) => {
     let uuid = crypto.randomUUID();
-    const participantID = req.body.participantID?.replaceAll(" ", "-");
+    const participantID = req.body.participantID;
     if(!participantID){
         res.send({"token": "Invalid Participant id"});
         return;
@@ -80,10 +80,16 @@ app.post("/validate-id", (req, res) => {
 });
 app.post("/mute-unmute-track", (req, res) => {
     const meetingID: string = req.body.meetingID;
-        const ownerID: string = req.body.ownerID;
-        const participantID: string = req.body.participantID;
-        const trackSid: string = req.body.trackSid;
-        const muted: boolean = req.body.muted;
+    const ownerID: string = req.body.ownerID;
+    const participantID: string = req.body.participantID;
+    const trackSid: string = req.body.trackSid;
+    const muted: boolean = req.body.muted;
+
+    if(!muted){
+        res.status(411);
+        res.send({reason: "Unable to remotely unmute!"});
+        return;
+    }
 
     if (!roomIDs.has(meetingID)) {
         res.status(411);
