@@ -2,7 +2,7 @@
     import * as Card from "$lib/components/ui/card";
     import * as Carousel from "$lib/components/ui/carousel";
     import Autoplay from "embla-carousel-autoplay";
-    const plugin = Autoplay({delay: 5000, stopOnInteraction: false });
+    const plugin = Autoplay({delay: 2000, stopOnInteraction: false });
 
 
 </script>

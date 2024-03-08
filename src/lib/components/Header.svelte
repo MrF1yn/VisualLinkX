@@ -10,7 +10,7 @@
     <div class="title text-palette1-3">
         VisualLink X
     </div>
-    <div class="flex items-center">
+    <div class="flex items-center ">
         <Button  variant="link">
             <Icon data={github} scale={2.5} class="text-palette1-3"></Icon>
         </Button>
