@@ -1,6 +1,7 @@
 import ParticipantVideo from "$lib/components/ParticipantVideo.svelte";
 import ParticipantItem from "$lib/components/ParticipantItem.svelte";
 import {Room, RoomEvent, VideoPresets} from "livekit-client";
+import {io, Socket} from "socket.io-client";
 import {
     handleDisconnect,
     handleLocalConnected,
@@ -14,10 +15,15 @@ import {goto} from "$app/navigation";
 import {toast} from "svelte-sonner";
 // import * as url from "url";
 import {page} from "$app/stores";
+import Message from "$lib/components/Message.svelte";
 
 export let roomManager: ClientRoomManager;
+export let socket: Socket;
 export const sfuIp = "ws://127.0.0.1:7880";
 export const backendIp = "http://localhost:3000";
+export const backendSocketIp = "ws://localhost:3000";
+
+export let messages = new Array<any>();
 export class ClientRoomManager{
 
     participantVideoItems: Map<string, ParticipantVideo>;
@@ -86,6 +92,37 @@ export class ClientRoomManager{
         await this.room.connect(sfuIp, this.token);
 
         console.log('connected to room', this.room.name);
+        socket = io(backendSocketIp, {
+            reconnectionDelayMax: 10000,
+        });
+
+        socket.on('connect', () => {
+            console.log("Connected Socket");
+        });
+
+        socket.on('chat', (roomID, name, message, time)=>{
+            messages.push(
+                {
+                    roomID: roomID,
+                    name: name,
+                    message: message,
+                    time: time,
+                    local: (name === this.name)
+                });
+            if(name === this.name)return;
+            if(roomID !== this.meetingId)return;
+            new Message({
+                target: document.querySelector("#global-chat") as HTMLElement,
+                props:{
+                    local: false,
+                    participant: name,
+                    time: time,
+                    message: message
+                }
+            })
+        });
+
+
         await this.room.localParticipant.enableCameraAndMicrophone();
 
     }

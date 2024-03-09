@@ -137,6 +137,25 @@ app.post("/sfu-webhook", (req, res)=>{
 
 // let SvelteKit handle everything else, including serving prerendered pages and static assets
 app.use(handler);
-app.listen(3000, () => {
+let server = app.listen(3000, () => {
     console.log('listening on port 3000');
 });
+
+import * as socketio from "socket.io";
+
+const io = new socketio.Server(server);
+
+io.on('connection', (socket: any) => {
+    console.log('user connected');
+
+
+    socket.on('disconnect', function () {
+        console.log('user disconnected');
+    });
+
+    socket.on('chat', (room: string, name: string, message:string, time:string)=>{
+        console.log(`${room}: ${name}: ${message}`);
+        io.emit('chat', room, name, message, time);
+    });
+});
+
