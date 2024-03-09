@@ -15,12 +15,13 @@
     import {Button} from "$lib/components/ui/button";
     import * as Sheet from "$lib/components/ui/sheet";
     import {faGear, faMicrophoneLines, faMicrophoneLinesSlash, faVideo, faVideoSlash, faUserGroup
-        , faArrowRightFromBracket, faCopy} from "@fortawesome/free-solid-svg-icons";
+        , faArrowRightFromBracket, faCopy, faMessage} from "@fortawesome/free-solid-svg-icons";
     import Icon from "svelte-awesome";
     import type {IconType} from "svelte-awesome/components/Icon.svelte";
     import {goto} from "$app/navigation";
     import * as url from "url";
     import ParticipantList from "$lib/components/ParticipantList.svelte";
+    import GlobalChat from "$lib/components/GlobalChat.svelte";
 
     export let data: PageData;
     let micIcon: IconType = faMicrophoneLines;
@@ -220,7 +221,19 @@
             on:click={disconnect}>
                 <Icon data={faArrowRightFromBracket} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button  class="h-full w-[15%] md:w-full md:h-[15%]">
+            <Sheet.Root>
+                <Sheet.Trigger asChild let:builder>
+                    <Button builders={[builder]} class="h-full w-[15%] md:w-full md:h-[15%]">
+                        <Icon data={faMessage} scale={2.5} class="text-palette1-3"></Icon>
+                    </Button>
+                </Sheet.Trigger>
+
+                <Sheet.Content side="right">
+                    <GlobalChat/>
+                </Sheet.Content>
+
+            </Sheet.Root>
+            <Button class="h-full w-[15%] md:w-full md:h-[15%]">
                 <Icon data={faGear} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
 
