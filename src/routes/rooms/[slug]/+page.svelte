@@ -132,7 +132,7 @@
             target: document.querySelector("#participant-videos") as HTMLElement,
             props:{
                 track: p.getTrack(Track.Source.Camera)?.track as Track,
-                ide: p.sid
+                participant: p,
             }
         })
 
@@ -178,9 +178,10 @@
     <Header></Header>
     <div id="participants" class="hidden"></div>
     <div class="container flex items-center  flex-col md:flex-row  overflow-auto p-3 justify-evenly gap-3"    >
+<!--        <div/>-->
         <Tooltip.Root>
             <Tooltip.Trigger asChild let:builder>
-                <Button builders={[builder]} variant="outline" class="w-fit h-fit mt-auto mb-4 mr-0 flex flex-col items-center gap-2 p-3 overflow-auto"
+                <Button builders={[builder]} variant="outline" class="hidden md:flex w-fit h-fit mt-auto mb-4 mr-0 flex-col items-center gap-2 p-3 "
                         on:click={copyMeetingLink}>
                     <Icon data="{faCopy}" scale={1.5}></Icon>
                 </Button>
@@ -190,8 +191,18 @@
             </Tooltip.Content>
         </Tooltip.Root>
 
-        <div id="participant-videos" class="aspect-video w-full md:w-auto md:h-[95%]  overflow-auto" >
+        <div id="participant-videos" class=" w-full md:w-full md:h-[95%]  overflow-auto border-2 border-blue-50 m-auto" >
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full border-green-500 border-2" autoplay ></video>-->
+            <ParticipantVideo participant="{null}" track="{null}"/>
+            <ParticipantVideo participant="{null}" track="{null}"/>
+            <ParticipantVideo participant="{null}" track="{null}"/>
+            <ParticipantVideo participant="{null}" track="{null}"/>
+            <ParticipantVideo participant="{null}" track="{null}"/>
+<!--            <ParticipantVideo participant="{null}" track="{null}"/>-->
+
+
+
+
         </div>
 
         <div class="flex flex-row md:flex-col bg-accent w-full h-[55px] md:w-[85px] md:h-[90%] md:rounded-md  items-center justify-evenly p-1 md:p-3
@@ -201,7 +212,7 @@
                 <Sheet.Root>
                     <Sheet.Trigger asChild let:builder>
                         <Button builders={[builder]} class="h-full w-[15%] md:w-full md:h-[15%]">
-                            <Icon data={faUserGroup} scale={2.5} class="text-palette1-3"></Icon>
+                            <Icon data={faUserGroup} scale={2} class="text-palette1-3"></Icon>
                         </Button>
                     </Sheet.Trigger>
 
@@ -254,14 +265,17 @@
     }
     :global(#participant-videos) {
         /*visibility: hidden;*/
-        display: grid;
-        grid-auto-flow: row;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        grid-template-rows: repeat(auto-fit, 1fr);
-        column-gap: 10px;
-        row-gap: 10px;
+        /*display: grid;*/
+        /*grid-auto-flow: row;*/
+        /*grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));*/
+        /*grid-template-rows: repeat(auto-fit, 1fr);*/
+        /*column-gap: 10px;*/
+        /*row-gap: 10px;*/
+        /*justify-content: space-around;*/
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
         justify-content: center;
-        align-content: center;
 
     }
     .container{

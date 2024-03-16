@@ -16,8 +16,8 @@ export function handleTrackSubscribed(track: RemoteTrack, publication: RemoteTra
             let vidElm: ParticipantVideo = new ParticipantVideo({
                 target: document.querySelector("#participant-videos") as HTMLElement,
                 props: {
-                    ide: participant.sid,
-                    track: track
+                    track: track,
+                    participant: participant
                 }
             });
             roomManager.participantVideoItems.set(participant.sid, vidElm);
