@@ -11,30 +11,42 @@
 
      let color = "";
 
+     let cameraMuted = "hidden";
+     let micMuted = "hidden"
+
      onMount(()=>{
          if(participant===null || track == null)return;
          track.attach(document.getElementById(participant.sid) as HTMLVideoElement);
          participant.on(ParticipantEvent.TrackMuted, (t)=>{
              if(t.source === Track.Source.Microphone){
-
+                 micMuted = "";
                  return;
              }
              if (t.source === Track.Source.Camera) {
-
+                 cameraMuted = "";
                  return;
              }
          })
          participant.on(ParticipantEvent.TrackUnmuted, (t) => {
              if (t.source === Track.Source.Microphone) {
-
+                 micMuted = "hidden";
                  return;
              }
              if (t.source === Track.Source.Camera) {
-
+                 cameraMuted = "hidden";
                  return;
              }
 
          })
+         participant.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
+             if(speaking) {
+                 activate();
+             }
+             else {
+                 deActivate();
+             }
+
+         });
      });
 
 
@@ -48,12 +60,15 @@
 
 </script>
 
-<div class="video-item">
-<!--    <div class="w-full h-full top-0 left-0 bg-red-600 flex justify-center items-center" >-->
-<!--        <Icon data={faVideoSlash} scale={5}></Icon>-->
-<!--    </div>-->
-    <video id="1"
-           class="rounded-xl bg-card border-2 aspect-video w-full box-border {color} overflow-hidden" autoplay>
+<div class="video-item relative rounded-xl border-2 box-border {color} ">
+    <div class="aspect-video w-full h-full top-0 left-0 flex justify-end p-5 absolute z-20 rounded-xl {micMuted}" >
+        <Icon data={faMicrophoneSlash} scale={3}></Icon>
+    </div>
+    <div class="aspect-video w-full h-full top-0 left-0 bg-accent flex justify-center items-center absolute z-10 rounded-xl {cameraMuted}">
+        <Icon data={faVideoSlash} scale={5}></Icon>
+    </div>
+    <video id="{participant?.sid}"
+           class="aspect-video rounded-xl bg-card w-full overflow-hidden absolute z-0" autoplay>
 
     </video>
 </div>
@@ -65,5 +80,6 @@
         min-width: 340px;
         margin: 10px;
         aspect-ratio: 16/9;
+        position: relative;
     }
 </style>

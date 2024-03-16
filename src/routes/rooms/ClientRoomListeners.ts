@@ -1,6 +1,6 @@
 import {
-    DisconnectReason, type LocalParticipant, type LocalTrackPublication,
-    type Participant, ParticipantEvent,
+    DisconnectReason, LocalParticipant,LocalTrackPublication,
+    Participant, ParticipantEvent,
     RemoteParticipant,
     RemoteTrack,
     RemoteTrackPublication, Track
@@ -21,13 +21,13 @@ export function handleTrackSubscribed(track: RemoteTrack, publication: RemoteTra
                 }
             });
             roomManager.participantVideoItems.set(participant.sid, vidElm);
-            participant.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
-                const participantVideoItem = (roomManager.participantVideoItems.get(participant.sid) as ParticipantVideo);
-                if(speaking)
-                    participantVideoItem.activate();
-                else
-                    participantVideoItem.deActivate();
-            });
+            // participant.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
+            //     const participantVideoItem = (roomManager.participantVideoItems.get(participant.sid) as ParticipantVideo);
+            //     if(speaking)
+            //         participantVideoItem.activate();
+            //     else
+            //         participantVideoItem.deActivate();
+            // });
 
         }
     }

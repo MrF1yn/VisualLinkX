@@ -144,19 +144,19 @@
         // });
         // clientRoomManager.participantItems.set(p.sid, card);
         clientRoomManager.participantVideoItems.set(p.sid, videoItem);
-        p.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
-            // const participantItem = (clientRoomManager.participantItems.get(p.sid) as ParticipantItem);
-            const participantVideoItem = (clientRoomManager.participantVideoItems.get(p.sid) as ParticipantVideo);
-            if(speaking) {
-                // participantItem.activate();
-                participantVideoItem.activate();
-            }
-            else {
-                // participantItem.deActivate();
-                participantVideoItem.deActivate();
-            }
-
-        });
+        // p.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
+        //     // const participantItem = (clientRoomManager.participantItems.get(p.sid) as ParticipantItem);
+        //     const participantVideoItem = (clientRoomManager.participantVideoItems.get(p.sid) as ParticipantVideo);
+        //     if(speaking) {
+        //         // participantItem.activate();
+        //         participantVideoItem.activate();
+        //     }
+        //     else {
+        //         // participantItem.deActivate();
+        //         participantVideoItem.deActivate();
+        //     }
+        //
+        // });
         // updateLocalMuteButtonUi(p.getTrack(Track.Source.Microphone)?.track);
         // updateLocalMuteButtonUi(p.getTrack(Track.Source.Camera)?.track);
 
@@ -191,17 +191,9 @@
             </Tooltip.Content>
         </Tooltip.Root>
 
-        <div id="participant-videos" class=" w-full md:w-full md:h-[95%]  overflow-auto border-2 border-blue-50 m-auto" >
+        <div id="participant-videos" class=" w-full md:w-full md:h-[95%]  overflow-auto m-auto flex flex-wrap justify-center items-center" >
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full border-green-500 border-2" autoplay ></video>-->
-            <ParticipantVideo participant="{null}" track="{null}"/>
-            <ParticipantVideo participant="{null}" track="{null}"/>
-            <ParticipantVideo participant="{null}" track="{null}"/>
-            <ParticipantVideo participant="{null}" track="{null}"/>
-            <ParticipantVideo participant="{null}" track="{null}"/>
 <!--            <ParticipantVideo participant="{null}" track="{null}"/>-->
-
-
-
 
         </div>
 
@@ -263,32 +255,12 @@
         /*min-height: 100vh;*/
         overflow: hidden;
     }
-    :global(#participant-videos) {
-        /*visibility: hidden;*/
-        /*display: grid;*/
-        /*grid-auto-flow: row;*/
-        /*grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));*/
-        /*grid-template-rows: repeat(auto-fit, 1fr);*/
-        /*column-gap: 10px;*/
-        /*row-gap: 10px;*/
-        /*justify-content: space-around;*/
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-
-    }
     .container{
         min-width: 100%;
         height: 100%;
-        /*flex-direction: column;*/
-        /*justify-content: space-evenly;*/
-        /*gap: 1%;*/
         box-shadow: hsla(var(--accent)) 0px 50px 100px -78px inset;
     }
     .background{
-        /*background-color: #092327;*/
-        /*background-color: #092327;*/
         width: 100%;
         height: 100vh;
         align-items: center;
