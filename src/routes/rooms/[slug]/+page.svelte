@@ -7,6 +7,7 @@
     import {page} from '$app/stores'
     import type {PageData} from './$types';
     import * as Card from "$lib/components/ui/card";
+    import * as Drawer from "$lib/components/ui/drawer";
     import {LocalTrack, ParticipantEvent, Track} from "livekit-client";
     import * as Tooltip from "$lib/components/ui/tooltip";
 
@@ -22,6 +23,7 @@
     import * as url from "url";
     import ParticipantList from "$lib/components/ParticipantList.svelte";
     import GlobalChat from "$lib/components/GlobalChat.svelte";
+    import Settings from "$lib/components/Settings.svelte";
 
     export let data: PageData;
     let micIcon: IconType = faMicrophoneLines;
@@ -172,11 +174,6 @@
 
         <div id="participant-videos" class=" w-full md:w-full md:h-[95%] overflow-hidden m-auto flex flex-wrap justify-center items-center" >
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full border-green-500 border-2" autoplay ></video>-->
-            <ParticipantVideo participant="{null}" track="{null}"/>
-            <ParticipantVideo participant="{null}" track="{null}"/>
-            <ParticipantVideo participant="{null}" track="{null}"/>
-            <ParticipantVideo participant="{null}" track="{null}"/>
-            <ParticipantVideo participant="{null}" track="{null}"/>
 
         </div>
 
@@ -219,9 +216,21 @@
                 </Sheet.Content>
 
             </Sheet.Root>
-            <Button class="h-full w-[15%] md:w-full md:h-[15%]">
-                <Icon data={faGear} scale={2.5} class="text-palette1-3"></Icon>
-            </Button>
+
+
+            <Drawer.Root>
+                <Drawer.Trigger asChild let:builder>
+                    <Button builders={[builder]} class="h-full w-[15%] md:w-full md:h-[15%]">
+                        <Icon data={faGear} scale={2.5} class="text-palette1-3"></Icon>
+                    </Button>
+                </Drawer.Trigger>
+                <Drawer.Content>
+                    <Drawer.Header>
+                        <Drawer.Title>Settings</Drawer.Title>
+                    </Drawer.Header>
+                    <Settings/>
+                </Drawer.Content>
+            </Drawer.Root>
 
 
         </div>
