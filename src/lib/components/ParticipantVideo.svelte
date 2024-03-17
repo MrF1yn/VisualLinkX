@@ -1,6 +1,6 @@
 <script lang="ts">
     import {type Participant, ParticipantEvent, RemoteTrack, Track, TrackEvent} from "livekit-client";
-     import {onMount} from "svelte";
+    import {onDestroy, onMount} from "svelte";
     import {faMicrophone, faMicrophoneSlash, faVideoSlash} from "@fortawesome/free-solid-svg-icons";
     import Icon from "svelte-awesome";
 
@@ -13,6 +13,17 @@
 
      let cameraMuted = "hidden";
      let micMuted = "hidden"
+
+    // if(document.getElementsByClassName("video-item").length>1){
+    //     setInitialSize("33.33");
+    // }
+    //
+    // onDestroy(()=>{
+    //     if(document.getElementsByClassName("video-item").length<2){
+    //         setInitialSize("100");
+    //     }
+    // });
+
 
      onMount(()=>{
          if(participant===null || track == null)return;
@@ -60,7 +71,7 @@
 
 </script>
 
-<div class="video-item relative rounded-xl border-2 box-border {color} ">
+<div class="video-item relative rounded-xl border-2 box-border {color}">
     <div class="aspect-video w-full h-full top-0 left-0 flex justify-end p-5 absolute z-20 rounded-xl {micMuted}" >
         <Icon data={faMicrophoneSlash} scale={3}></Icon>
     </div>
@@ -68,7 +79,7 @@
         <Icon data={faVideoSlash} scale={5}></Icon>
     </div>
     <video id="{participant?.sid}"
-           class="aspect-video rounded-xl bg-card w-full overflow-hidden absolute z-0" autoplay>
+           class="aspect-video rounded-xl  w-full overflow-hidden absolute z-0" autoplay>
 
     </video>
 </div>

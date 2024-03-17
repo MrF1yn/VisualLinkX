@@ -16,7 +16,6 @@ import {toast} from "svelte-sonner";
 // import * as url from "url";
 import {page} from "$app/stores";
 import Message from "$lib/components/Message.svelte";
-
 export let roomManager: ClientRoomManager;
 export let socket: Socket;
 export const sfuIp = "ws://127.0.0.1:7880";

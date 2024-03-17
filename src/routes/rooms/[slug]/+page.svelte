@@ -135,30 +135,9 @@
                 participant: p,
             }
         })
-
-        // let card = new ParticipantItem({
-        //     target: document.querySelector("#participants") as HTMLElement,
-        //     props: {
-        //         participantName: name
-        //     }
-        // });
-        // clientRoomManager.participantItems.set(p.sid, card);
         clientRoomManager.participantVideoItems.set(p.sid, videoItem);
-        // p.on(ParticipantEvent.IsSpeakingChanged, (speaking: boolean)=>{
-        //     // const participantItem = (clientRoomManager.participantItems.get(p.sid) as ParticipantItem);
-        //     const participantVideoItem = (clientRoomManager.participantVideoItems.get(p.sid) as ParticipantVideo);
-        //     if(speaking) {
-        //         // participantItem.activate();
-        //         participantVideoItem.activate();
-        //     }
-        //     else {
-        //         // participantItem.deActivate();
-        //         participantVideoItem.deActivate();
-        //     }
-        //
-        // });
-        // updateLocalMuteButtonUi(p.getTrack(Track.Source.Microphone)?.track);
-        // updateLocalMuteButtonUi(p.getTrack(Track.Source.Camera)?.track);
+
+
 
 
 
@@ -191,9 +170,13 @@
             </Tooltip.Content>
         </Tooltip.Root>
 
-        <div id="participant-videos" class=" w-full md:w-full md:h-[95%]  overflow-auto m-auto flex flex-wrap justify-center items-center" >
+        <div id="participant-videos" class=" w-full md:w-full md:h-[95%] overflow-hidden m-auto flex flex-wrap justify-center items-center" >
 <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full border-green-500 border-2" autoplay ></video>-->
-<!--            <ParticipantVideo participant="{null}" track="{null}"/>-->
+            <ParticipantVideo participant="{null}" track="{null}"/>
+            <ParticipantVideo participant="{null}" track="{null}"/>
+            <ParticipantVideo participant="{null}" track="{null}"/>
+            <ParticipantVideo participant="{null}" track="{null}"/>
+            <ParticipantVideo participant="{null}" track="{null}"/>
 
         </div>
 
