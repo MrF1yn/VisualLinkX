@@ -217,20 +217,19 @@
 
             </Sheet.Root>
 
-
-            <Drawer.Root>
-                <Drawer.Trigger asChild let:builder>
+            <Sheet.Root>
+                <Sheet.Trigger asChild let:builder>
                     <Button builders={[builder]} class="h-full w-[15%] md:w-full md:h-[15%]">
                         <Icon data={faGear} scale={2.5} class="text-palette1-3"></Icon>
                     </Button>
-                </Drawer.Trigger>
-                <Drawer.Content>
-                    <Drawer.Header>
-                        <Drawer.Title>Settings</Drawer.Title>
-                    </Drawer.Header>
+                </Sheet.Trigger>
+                <Sheet.Content side="bottom">
+                    <Sheet.Header class="text-xl">
+                        Settings
+                    </Sheet.Header>
                     <Settings/>
-                </Drawer.Content>
-            </Drawer.Root>
+                </Sheet.Content>
+            </Sheet.Root>
 
 
         </div>
