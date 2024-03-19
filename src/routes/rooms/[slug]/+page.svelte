@@ -1,7 +1,7 @@
 <script lang="ts">
     import Header from "$lib/components/Header.svelte";
     import userName from "$lib/Store";
-    import { toast } from "svelte-sonner";
+    import {toast} from "svelte-sonner";
     import {onMount} from "svelte";
     import ParticipantItem from "$lib/components/ParticipantItem.svelte";
     import {page} from '$app/stores'
@@ -15,8 +15,10 @@
     import {ClientRoomManager} from "../ClientRoomManager";
     import {Button} from "$lib/components/ui/button";
     import * as Sheet from "$lib/components/ui/sheet";
-    import {faGear, faMicrophoneLines, faMicrophoneLinesSlash, faVideo, faVideoSlash, faUserGroup
-        , faArrowRightFromBracket, faCopy, faMessage} from "@fortawesome/free-solid-svg-icons";
+    import {
+        faGear, faMicrophoneLines, faMicrophoneLinesSlash, faVideo, faVideoSlash, faUserGroup
+        , faArrowRightFromBracket, faCopy, faMessage
+    } from "@fortawesome/free-solid-svg-icons";
     import Icon from "svelte-awesome";
     import type {IconType} from "svelte-awesome/components/Icon.svelte";
     import {goto} from "$app/navigation";
@@ -30,13 +32,13 @@
     let vidIcon: IconType = faVideo;
     let clientRoomManager: ClientRoomManager;
 
-    async function onMicButtonClick(e: any){
-        if(!clientRoomManager)return;
+    async function onMicButtonClick(e: any) {
+        if (!clientRoomManager) return;
         let p = clientRoomManager.room.localParticipant;
-        if(!p)return;
+        if (!p) return;
         const track = p.getTrack(Track.Source.Microphone)?.track;
-        if(!track)return;
-        if(track.isMuted) {
+        if (!track) return;
+        if (track.isMuted) {
             await track.unmute();
             // updateLocalMuteButtonUi(track);
             return;
@@ -61,6 +63,7 @@
         // updateLocalMuteButtonUi(track);
 
     }
+
     // function updateLocalMuteButtonUi(track: LocalTrack | undefined){
     //     if (!track)return;
     //     if(track.source===Track.Source.Microphone) {
@@ -73,15 +76,14 @@
     // }
 
 
-
-    function copyMeetingLink(){
+    function copyMeetingLink() {
         navigator.clipboard.writeText(window.location.href);
         toast("Copied Meeting Link!", {
-            description:"Meeting link is successfully copied to your clipboard."
+            description: "Meeting link is successfully copied to your clipboard."
         })
     }
 
-    async function disconnect(){
+    async function disconnect() {
         if (!clientRoomManager) return;
         let p = clientRoomManager.room.localParticipant;
         if (!p) return;
@@ -92,29 +94,29 @@
         await goto(window.location.origin);
     }
 
-    onMount(async ()=>{
+    onMount(async () => {
         //TODO: VIDEO ELEMENT BORDER SIZE INCREASE AND ADD GREEN GLOW ON SOUND
 
         let name = "";
-        userName.subscribe((n)=>{
+        userName.subscribe((n) => {
             name = n;
         });
         // const name = $page.url.searchParams.get('name');
-        const meetingID = (data as {meetingID: string}).meetingID;
+        const meetingID = (data as { meetingID: string }).meetingID;
         console.log(name);
 
 
-        if(!name)return;
+        if (!name) return;
         clientRoomManager = new ClientRoomManager(meetingID, name);
         await clientRoomManager.init();
         const p = clientRoomManager.room.localParticipant;
 
-        p.on(ParticipantEvent.TrackMuted, (track)=>{
-            if(track.source===Track.Source.Microphone) {
+        p.on(ParticipantEvent.TrackMuted, (track) => {
+            if (track.source === Track.Source.Microphone) {
                 micIcon = faMicrophoneLinesSlash;
                 return;
             }
-            if(track.source===Track.Source.Camera){
+            if (track.source === Track.Source.Camera) {
                 vidIcon = faVideoSlash;
             }
         });
@@ -132,7 +134,7 @@
         // const localVid = (document.querySelector("#local") as HTMLVideoElement );
         let videoItem = new ParticipantVideo({
             target: document.querySelector("#participant-videos") as HTMLElement,
-            props:{
+            props: {
                 track: p.getTrack(Track.Source.Camera)?.track as Track,
                 participant: p,
             }
@@ -140,29 +142,25 @@
         clientRoomManager.participantVideoItems.set(p.sid, videoItem);
 
 
-
-
-
     });
-
-
 
 
 </script>
 
 <svelte:head>
     <title>VisualLinkX</title>
-    <meta name="description" content="VisualLinkX the high end video conferencing app" />
+    <meta name="description" content="VisualLinkX the high end video conferencing app"/>
 </svelte:head>
 
 <div class="background flex">
     <Header></Header>
     <div id="participants" class="hidden"></div>
-    <div class="container flex items-center  flex-col md:flex-row  overflow-auto p-3 justify-evenly gap-3"    >
-<!--        <div/>-->
+    <div class="container flex items-center  flex-col md:flex-row  overflow-auto p-3 justify-evenly gap-3">
+        <!--        <div/>-->
         <Tooltip.Root>
             <Tooltip.Trigger asChild let:builder>
-                <Button builders={[builder]} variant="outline" class="hidden md:flex w-fit h-fit mt-auto mb-4 mr-0 flex-col items-center gap-2 p-3 "
+                <Button builders={[builder]} variant="outline"
+                        class="hidden md:flex w-fit h-fit mt-auto mb-4 mr-0 flex-col items-center gap-2 p-3 "
                         on:click={copyMeetingLink}>
                     <Icon data="{faCopy}" scale={1.5}></Icon>
                 </Button>
@@ -172,8 +170,9 @@
             </Tooltip.Content>
         </Tooltip.Root>
 
-        <div id="participant-videos" class=" w-full md:w-full md:h-[95%] overflow-hidden m-auto flex flex-wrap justify-center items-center" >
-<!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full border-green-500 border-2" autoplay ></video>-->
+        <div id="participant-videos"
+             class=" w-full md:w-full md:h-[95%] overflow-hidden m-auto flex flex-wrap justify-center items-center">
+            <!--            <video id="local" class="rounded-xl bg-card border aspect-video w-full border-green-500 border-2" autoplay ></video>-->
 
         </div>
 
@@ -181,27 +180,28 @@
         shadow-[0_0px_90px_5px_rgba(101,40,200)]">
 
 
-                <Sheet.Root>
-                    <Sheet.Trigger asChild let:builder>
-                        <Button builders={[builder]} class="h-full w-[15%] md:w-full md:h-[15%]">
-                            <Icon data={faUserGroup} scale={2} class="text-palette1-3"></Icon>
-                        </Button>
-                    </Sheet.Trigger>
+            <Sheet.Root>
+                <Sheet.Trigger asChild let:builder>
+                    <Button builders={[builder]} class="h-full w-[15%] md:w-full md:h-[15%]">
+                        <Icon data={faUserGroup} scale={2} class="text-palette1-3"></Icon>
+                    </Button>
+                </Sheet.Trigger>
 
-                    <Sheet.Content side="right">
-                        <ParticipantList></ParticipantList>
-                    </Sheet.Content>
+                <Sheet.Content side="right">
+                    <ParticipantList/>
+                </Sheet.Content>
+            </Sheet.Root>
 
-                </Sheet.Root>
-
-            <Button  variant="{micIcon===faMicrophoneLinesSlash?'destructive':'default'}"  class="h-full w-[15%] md:w-full md:h-[15%]" on:click={onMicButtonClick}>
+            <Button variant="{micIcon===faMicrophoneLinesSlash?'destructive':'default'}"
+                    class="h-full w-[15%] md:w-full md:h-[15%]" on:click={onMicButtonClick}>
                 <Icon data={micIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button variant="{vidIcon===faVideoSlash?'destructive':'default'}" class="h-full w-[15%] md:w-full md:h-[15%]" on:click={onVideoButtonClick}>
+            <Button variant="{vidIcon===faVideoSlash?'destructive':'default'}"
+                    class="h-full w-[15%] md:w-full md:h-[15%]" on:click={onVideoButtonClick}>
                 <Icon data={vidIcon} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
-            <Button  class="h-full w-[15%] md:w-full md:h-[15%] hover:bg-destructive transition duration-300 ease-in-out"
-            on:click={disconnect}>
+            <Button class="h-full w-[15%] md:w-full md:h-[15%] hover:bg-destructive transition duration-300 ease-in-out"
+                    on:click={disconnect}>
                 <Icon data={faArrowRightFromBracket} scale={2.5} class="text-palette1-3"></Icon>
             </Button>
             <Sheet.Root>
@@ -246,12 +246,14 @@
         /*min-height: 100vh;*/
         overflow: hidden;
     }
-    .container{
+
+    .container {
         min-width: 100%;
         height: 100%;
         box-shadow: hsla(var(--accent)) 0px 50px 100px -78px inset;
     }
-    .background{
+
+    .background {
         width: 100%;
         height: 100vh;
         align-items: center;
